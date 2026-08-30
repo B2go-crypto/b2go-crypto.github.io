@@ -13,21 +13,22 @@
 
   <script>
     function lipa() {
-      const callbacks = {
-        onReadyForServerApproval: function(paymentId) {  },
-        onReadyForServerCompletion: function(paymentId, txid) { alert("Asante! Malipo yamekamilika"); },
-        onCancel: function(paymentId) { alert("Umebatilisha malipo"); },
-        onError: function(error) { alert("Kosa: " + error); }
-      };
-      
       Pi.authenticate(["payments"]).then(function(auth) {
         Pi.createPayment({
           amount: 1,
           memo: "Majaribio ya Duka",
           metadata: { bidhaa: "Simu" }
-        }, callbacks);
-      }).catch(function(error) {
-        alert("Login error: " + error);
+        }, {
+          onReadyForServerApproval: function(paymentId) {
+            Pi.approvePayment(paymentId); // JIFANYIE APPROVE
+          },
+          onReadyForServerCompletion: function(paymentId, txid) {
+            Pi.completePayment(paymentId, txid); // JIFANYIE COMPLETE
+            alert("✅ Asante! Malipo yamekamilika");
+          },
+          onCancel: function(paymentId) { alert("Umebatilisha malipo"); },
+          onError: function(error) { alert("Kosa: " + error); }
+        });
       });
     }
   </script>
