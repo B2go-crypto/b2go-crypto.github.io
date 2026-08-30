@@ -3,23 +3,37 @@
 <head>
   <title>Duka Langu Pi</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-  <script>Pi.init({ version: "2.0", sandbox: true })</script>
 </head>
-<body style="text-align:center; padding:50px">
+<body style="text-align:center; padding:50px; font-family:sans-serif">
   <h1>Karibu Duka Langu Pi</h1>
   <p>Bidhaa: Simu</p>
   <p>Bei: 1 Pi</p>
-  <button onclick="lipa()">LIPA KWA PI</button>
+  <button style="background:#FFA500; color:white; padding:15px 30px; border:none; border-radius:10px; font-size:18px" onclick="lipa()">LIPA KWA PI</button>
 
   <script>
+    Pi.init({ version: "2.0", sandbox: true });
+
     function lipa() {
-      Pi.authenticate(["payments"]).then(() => {
-        Pi.createPayment({amount: 1, memo: "Test", metadata: {}}, {
-          onReadyForServerApproval: (id) => Pi.approvePayment(id),
-          onReadyForServerCompletion: (id, tx) => Pi.completePayment(id, tx),
-          onCancel: () => {},
-          onError: (e) => alert(e)
+      Pi.authenticate(["payments"]).then(function(auth) {
+        Pi.createPayment({
+          amount: 1,
+          memo: "Majaribio Duka",
+          metadata: {product: "Simu"}
+        }, {
+          onReadyForServerApproval: function(paymentId) {
+            // HAPA TUNAJIPITISHA TU
+            Pi.approvePayment(paymentId);
+          },
+          onReadyForServerCompletion: function(paymentId, txid) {
+            // HAPA TUNAJIMALIZA TU
+            Pi.completePayment(paymentId, txid);
+            alert("✅ Asante! Malipo ya 1 Pi yamekamilika");
+          },
+          onCancel: function(paymentId) { alert("Umebatilisha malipo"); },
+          onError: function(error) { alert("Kosa: " + error); }
         });
+      }).catch(function(error) {
+        alert("Login failed: " + error);
       });
     }
   </script>
