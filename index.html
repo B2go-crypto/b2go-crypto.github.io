@@ -12,24 +12,31 @@
   <button style="background:orange; color:white; padding:15px; border:none; font-size:18px; border-radius:10px" onclick="lipa()">LIPA KWA PI</button>
 
   <script>
-    function lipa() {
-      Pi.authenticate(["payments"]).then(function(auth) {
-        Pi.createPayment({
-          amount: 1,
-          memo: "Majaribio ya Duka",
-          metadata: { bidhaa: "Simu" }
-        }, {
-          onReadyForServerApproval: function(paymentId) {
-            Pi.approvePayment(paymentId); // JIFANYIE APPROVE
-          },
-          onReadyForServerCompletion: function(paymentId, txid) {
-            Pi.completePayment(paymentId, txid); // JIFANYIE COMPLETE
-            alert("✅ Asante! Malipo yamekamilika");
-          },
-          onCancel: function(paymentId) { alert("Umebatilisha malipo"); },
-          onError: function(error) { alert("Kosa: " + error); }
-        });
-      });
+    async function lipa() {
+      const scopes = ["payments"];
+      const auth = await Pi.authenticate(scopes);
+      
+      const paymentData = {
+        amount: 1,
+        memo: "Majaribio ya Duka",
+        metadata: { bidhaa: "Simu" }
+      };
+
+      const callbacks = {
+        onReadyForServerApproval: (paymentId) => {
+          console.log("Approving:", paymentId);
+          Pi.approvePayment(paymentId);
+        },
+        onReadyForServerCompletion: (paymentId, txid) => {
+          console.log("Completing:", paymentId);
+          Pi.completePayment(paymentId, txid);
+          alert("✅ Asante! Malipo yamekamilika");
+        },
+        onCancel: (paymentId) => { alert("Umebatilisha malipo"); },
+        onError: (error) => { alert("Kosa: " + error); }
+      };
+
+      Pi.createPayment(paymentData, callbacks);
     }
   </script>
 </body>
