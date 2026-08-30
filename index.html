@@ -1,51 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Duka Langu Pi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 50px; background: #f0f0f0; }
-        #payButton { background: #ffc336; border: none; padding: 20px 40px; font-size: 20px; border-radius: 10px; cursor: pointer; }
-    </style>
+  <title>Duka Langu Pi</title>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script>Pi.init({ version: "2.0", sandbox: true })</script>
 </head>
-<body>
-    <h1>Karibu Duka Langu Pi</h1>
-    <p>Bidhaa: Simu</p>
-    <p>Bei: 1 Pi</p>
-    <button id="payButton">LIPA KWA PI</button>
+<body style="text-align:center; font-family:sans-serif; padding:50px">
+  <h1>Karibu Duka Langu Pi</h1>
+  <p>Bidhaa: Simu</p>
+  <p>Bei: 1 Pi</p>
+  <button style="background:orange; color:white; padding:15px; border:none; font-size:18px; border-radius:10px" onclick="lipa()">LIPA KWA PI</button>
 
-    <script>
-        Pi.init({ version: "2.0", sandbox: true });
-
-        Pi.authenticate(['username', 'payments'], function(auth) {
-            console.log("User authenticated");
-        }, function(error) {
-            console.error(error);
-        });
-
-        document.getElementById("payButton").onclick = function() {
-            const paymentData = {
-                amount: 1,
-                memo: "Ununuzi wa bidhaa",
-                metadata: { bidhaa: "1" }
-            };
-
-            Pi.createPayment(paymentData, {
-                onReadyForServerApproval: function(paymentId) {
-                    alert("Malipo yameanza. ID: " + paymentId);
-                },
-                onReadyForServerCompletion: function(paymentId, txid) {
-                    alert("Malipo yamekamilika!");
-                },
-                onCancel: function(paymentId) {
-                    alert("Umesitisha");
-                },
-                onError: function(error) {
-                    alert("Kuna tatizo: " + error);
-                }
-            });
-        };
-    </script>
+  <script>
+    function lipa() {
+      const callbacks = {
+        onReadyForServerApproval: function(paymentId) {  },
+        onReadyForServerCompletion: function(paymentId, txid) { alert("Asante! Malipo yamekamilika"); },
+        onCancel: function(paymentId) { alert("Umebatilisha malipo"); },
+        onError: function(error) { alert("Kosa: " + error); }
+      };
+      
+      Pi.authenticate(["payments"]).then(function(auth) {
+        Pi.createPayment({
+          amount: 1,
+          memo: "Majaribio ya Duka",
+          metadata: { bidhaa: "Simu" }
+        }, callbacks);
+      }).catch(function(error) {
+        alert("Login error: " + error);
+      });
+    }
+  </script>
 </body>
 </html>
