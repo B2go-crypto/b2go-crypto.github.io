@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Duka Langu</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-</head>
-<body style="text-align:center; font-family:sans-serif; padding-top:50px;">
-    <h1 style="color:purple;">Karibu Duka Langu</h1>
-    <p>Bidhaa: 1 Pi</p>
-    <button id="payButton" style="background:purple; color:white; padding:15px 30px; border:none; border-radius:10px; font-size:18px;">LIPA KWA PI</button>
-
-    <script>
-        Pi.init({ version: "2.0" });
+<script>
+        Pi.init({ version: "2.0", sandbox: "true" }); // ONGEZA sandbox:true
         
+        Pi.authenticate(['username', 'payments'], function(auth) {
+            console.log("User authenticated");
+        }, function(error) {
+            console.error(error);
+        });
+
         document.getElementById("payButton").onclick = function() {
             const paymentData = {
                 amount: 1,
@@ -35,5 +30,3 @@
             });
         };
     </script>
-</body>
-</html>
