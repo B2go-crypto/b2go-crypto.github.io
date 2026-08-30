@@ -1,6 +1,23 @@
-<script>
-        Pi.init({ version: "2.0", sandbox: "true" }); // ONGEZA sandbox:true
-        
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Duka Langu Pi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; background: #f0f0f0; }
+        #payButton { background: #ffc336; border: none; padding: 20px 40px; font-size: 20px; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Karibu Duka Langu Pi</h1>
+    <p>Bidhaa: Simu</p>
+    <p>Bei: 1 Pi</p>
+    <button id="payButton">LIPA KWA PI</button>
+
+    <script>
+        Pi.init({ version: "2.0", sandbox: true });
+
         Pi.authenticate(['username', 'payments'], function(auth) {
             console.log("User authenticated");
         }, function(error) {
@@ -13,20 +30,22 @@
                 memo: "Ununuzi wa bidhaa",
                 metadata: { bidhaa: "1" }
             };
-            
+
             Pi.createPayment(paymentData, {
                 onReadyForServerApproval: function(paymentId) {
                     alert("Malipo yameanza. ID: " + paymentId);
                 },
                 onReadyForServerCompletion: function(paymentId, txid) {
-                    alert("Hongera! Malipo yamekamilika");
+                    alert("Malipo yamekamilika!");
                 },
                 onCancel: function(paymentId) {
-                    alert("Umeghairi malipo");
+                    alert("Umesitisha");
                 },
                 onError: function(error) {
-                    alert("Kuna shida: " + error);
+                    alert("Kuna tatizo: " + error);
                 }
             });
         };
     </script>
+</body>
+</html>
