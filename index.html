@@ -1,1 +1,150 @@
-<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>B2Go Zakat - Pi Network</title><script src="https://sdk.minepi.com/pi-sdk.js"></script><style>:root{--pi:#8c65d3;--gold:#c9a86a}*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;min-height:100vh;padding:15px}.card{max-width:480px;margin:0 auto;background:#ffffff0f;backdrop-filter:blur(12px);border-radius:20px;padding:20px;border:1px solid #ffffff1a}.logo{text-align:center}.logo h1{color:var(--gold);font-size:28px}.lang{display:flex;gap:6px;justify-content:center;margin:12px 0}.lang button{padding:6px 12px;border-radius:20px;border:1px solid var(--gold);background:transparent;color:#fff;cursor:pointer;font-size:12px}.lang button.active{background:var(--gold);color:#000;font-weight:700}.input-group{margin:12px 0}.input-group label{display:block;font-size:13px;margin-bottom:5px;opacity:.8}.input-group input,.input-group select{width:100%;padding:12px;border-radius:12px;border:none;background:#fff;color:#000;font-size:16px}.result{background:linear-gradient(135deg,var(--gold),#e8c88a);color:#000;padding:15px;border-radius:15px;margin:15px 0;text-align:center}.result h2{font-size:32px}.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:800;font-size:16px;cursor:pointer;margin-top:8px}.btn-pi{background:#8c65d3;color:#fff}.btn-pay{background:var(--gold);color:#000}.note{font-size:11px;opacity:.6;text-align:center;margin-top:10px}</style></head><body><div class="card"><div class="logo"><h1>🕌 B2Go Zakat</h1><p id="tagline">Kokotoa Zakat yako kwa urahisi</p></div><div class="lang"><button id="btn-sw" class="active" onclick="setLang('sw')">KISW</button><button id="btn-en" onclick="setLang('en')">ENG</button><button id="btn-ar" onclick="setLang('ar')">العربية</button></div><div class="input-group"><label id="l-wealth">Jumla ya Mali (Pi)</label><input type="number" id="wealth" placeholder="1000" value="1000"></div><div class="input-group"><label id="l-type">Aina ya Zakat</label><select id="ztype"><option value="0.025">Zakat ya Mali (2.5%)</option><option value="0.025">Zakat ya Biashara (2.5%)</option><option value="0.1">Zakat ya Mazao (10%)</option></select></div><div class="result"><div id="r-label">Zakat Unayopaswa Kulipa</div><h2 id="zakatAmount">25 Pi</h2><div id="r-sub" style="font-size:12px">Sawa na 2.5% ya mali yako</div></div><button class="btn btn-pi" id="btn-connect" onclick="connectPi()">🔗 Unganisha na Pi Wallet</button><button class="btn btn-pay" id="btn-pay" onclick="payZakat()">💳 Lipa Zakat kwa Pi</button><div class="note" id="note">Imethibitishwa na Sharia. 100% ya Zakat inakwenda kwa wahitaji.<br>Domain: b2go-crypto.github.io</div></div><script>const Pi=window.Pi;let piUser=null;const T={sw:{tagline:"Kokotoa Zakat yako kwa urahisi",wealth:"Jumla ya Mali (Pi)",type:"Aina ya Zakat",rlabel:"Zakat Unayopaswa Kulipa",rsub:"Sawa na % ya mali yako",connect:"🔗 Unganisha na Pi Wallet",pay:"💳 Lipa Zakat kwa Pi",note:"Imethibitishwa na Sharia. 100% ya Zakat inakwenda kwa wahitaji."},en:{tagline:"Calculate your Zakat easily",wealth:"Total Wealth (Pi)",type:"Zakat Type",rlabel:"Zakat You Should Pay",rsub:"Equal to % of your wealth",connect:"🔗 Connect Pi Wallet",pay:"💳 Pay Zakat with Pi",note:"Sharia compliant. 100% Zakat goes to those in need."},ar:{tagline:"احسب زكاتك بسهولة",wealth:"إجمالي الثروة (Pi)",type:"نوع الزكاة",rlabel:"الزكاة الواجبة عليك",rsub:"يساوي % من ثروتك",connect:"🔗 ربط محفظة Pi",pay:"💳 ادفع الزكاة بـ Pi",note:"متوافق مع الشريعة. 100٪ من الزكاة تذهب للمحتاجين."}};let lang='sw';function setLang(l){lang=l;document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');const t=T[l];document.getElementById('tagline').innerText=t.tagline;document.getElementById('l-wealth').innerText=t.wealth;document.getElementById('l-type').innerText=t.type;document.getElementById('r-label').innerText=t.rlabel;document.getElementById('btn-connect').innerText=t.connect;document.getElementById('btn-pay').innerText=t.pay;document.getElementById('note').innerText=t.note;calc();if(l==='ar'){document.body.dir='rtl';}else{document.body.dir='ltr';}}function calc(){const w=parseFloat(document.getElementById('wealth').value)||0;const rate=parseFloat(document.getElementById('ztype').value)||0.025;const z=w*rate;document.getElementById('zakatAmount').innerText=z.toFixed(2)+' Pi';const p=(rate*100)+'%';document.getElementById('r-sub').innerText=T[lang].rsub.replace('%',p);}document.getElementById('wealth').addEventListener('input',calc);document.getElementById('ztype').addEventListener('change',calc);calc();async function initPi(){if(Pi){await Pi.init({version:"2.0",sandbox:true});}}initPi();async function connectPi(){try{await Pi.init({version:"2.0",sandbox:true});const auth=await Pi.authenticate(['username','payments'],(p)=>{});piUser=auth.user;document.getElementById('btn-connect').innerText='✅ '+auth.user.username;alert('Umeunganishwa: '+auth.user.username);}catch(e){alert('Fungua App hii ndani ya Pi Browser ili kuunganisha Wallet');}}async function payZakat(){const amount=parseFloat(document.getElementById('zakatAmount').innerText);if(!piUser){alert('Tafadhali unganisha Pi Wallet kwanza');return;}try{await Pi.createPayment({amount:amount,memo:"B2Go Zakat",metadata:{type:"zakat"}},{onReadyForServerApproval:(id)=>{},onReadyForServerCompletion:(id,txid)=>{alert('Shukrani! Zakat yako imelipwa. Txid: '+txid);},onCancel:(id)=>{alert('Cancelled');},onError:(e,id)=>{alert('Error: '+e);}});}catch(e){alert('Lipa ndani ya Pi Browser tu. Error: '+e.message);}}</script></body></html>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zakat & Mirath - Sharia Calculator</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+body{font-family:system-ui;background:#f6f8fb;margin:0;padding:0;color:#222}
+header{background:#0f6d2f;color:white;padding:18px;text-align:center}
+header h1{margin:0;font-size:22px}
+header p{margin:4px 0 0;opacity:.9;font-size:13px}
+.langs{margin-top:10px}
+.langs button{margin:2px;padding:5px 10px;border:0;border-radius:6px;cursor:pointer}
+.container{max-width:480px;margin:20px auto;padding:15px}
+.tabs{display:flex;gap:8px;margin-bottom:15px}
+.tabs button{flex:1;padding:12px;border:0;border-radius:10px;background:#ddd;font-weight:bold;cursor:pointer}
+.tabs button.active{background:#0f6d2f;color:white}
+.card{background:white;padding:18px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.08);display:none}
+.card.active{display:block}
+input,select{width:100%;padding:10px;margin:6px 0 12px;border:1px solid #ccc;border-radius:8px}
+.btn{width:100%;padding:13px;background:#f5b800;border:0;border-radius:10px;font-weight:bold;cursor:pointer;font-size:16px}
+.btn-green{background:#0f6d2f;color:white;margin-top:10px}
+.result{margin-top:15px;background:#eef7ee;padding:12px;border-radius:8px;font-weight:bold}
+small{color:#666}
+</style>
+</head>
+<body>
+<header>
+<h1 id="title">Zakat & Mirath</h1>
+<p>Sharia Calculator - Hesabu kwa Pi</p>
+<div class="langs">
+<button onclick="setLang('sw')">Swahili</button>
+<button onclick="setLang('en')">English</button>
+<button onclick="setLang('ar')">العربية</button>
+</div>
+</header>
+
+<div class="container">
+<div class="tabs">
+<button id="tZakat" class="active" onclick="openTab('zakat')">ZAKAT</button>
+<button id="tMirath" onclick="openTab('mirath')">MIRATH</button>
+<button id="tCharity" onclick="openTab('charity')">SADAQAH</button>
+</div>
+
+<!-- ZAKAT -->
+<div id="zakat" class="card active">
+<h3>Zakat Calculator</h3>
+<p><small>Hesabu Zakat ya mali (2.5% kama imefikia Nisab)</small></p>
+<label>Jumla ya Mali (Pi / TZS)</label>
+<input id="zMali" type="number" placeholder="mf: 1000">
+<button class="btn-green" onclick="calcZakat()">Hesabu Zakat</button>
+<div id="zResult" class="result" style="display:none"></div>
+<button class="btn" onclick="payPi('zakat')">Pay with Pi - Lipa Zakat</button>
+</div>
+
+<!-- MIRATH -->
+<div id="mirath" class="card">
+<h3>Mirath Calculator</h3>
+<p><small>Gawa Urithi kwa Mujibu wa Sharia (An-Nisa 11,12)</small></p>
+<label>Jumla ya Mali ya Marehemu</label>
+<input id="mMali" type="number" placeholder="mf: 10000">
+<label>Mke / Mume?</label>
+<select id="mMke"><option value="0">Hakuna</option><option value="mke">Mke (1)</option><option value="mke2">Wake 2+</option><option value="mume">Mume</option></select>
+<label>Idadi ya Watoto wa Kiume</label>
+<input id="mKiume" type="number" value="0">
+<label>Idadi ya Watoto wa Kike</label>
+<input id="mKike" type="number" value="0">
+<label>Mama yupo?</label>
+<select id="mMama"><option value="0">Hapana</option><option value="1">Ndio</option></select>
+<label>Baba yupo?</label>
+<select id="mBaba"><option value="0">Hapana</option><option value="1">Ndio</option></select>
+<button class="btn-green" onclick="calcMirath()">Gawa Mirath</button>
+<div id="mResult" class="result" style="display:none"></div>
+</div>
+
+<!-- CHARITY -->
+<div id="charity" class="card">
+<h3>Sadaqah / Charity</h3>
+<p><small>Kwa yeyote aliyeguswa kuchangia - Sio lazima, ni hiari kwa ajili ya Allah</small></p>
+<label>Kiasi cha kuchangia (Pi)</label>
+<input id="cMali" type="number" placeholder="mf: 5 Pi">
+<button class="btn" onclick="payPi('sadaqah')">Changia kwa Pi - Sadaqah</button>
+<div id="cResult" class="result" style="display:none"></div>
+<p style="margin-top:15px"><small>"Mfano wa wanaotoa mali zao katika njia ya Allah ni kama punje moja..." (2:261)</small></p>
+</div>
+
+</div>
+
+<script>
+let Pi = window.Pi;
+Pi && Pi.init({version:"2.0"});
+
+function openTab(id){
+document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.getElementById('t'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('active');
+}
+
+function calcZakat(){
+let mali=parseFloat(document.getElementById('zMali').value)||0;
+let zakat=mali*0.025;
+document.getElementById('zResult').style.display='block';
+document.getElementById('zResult').innerHTML=`Mali: ${mali} <br> Zakat (2.5%): <b>${zakat.toFixed(2)}</b>`;
+}
+
+function calcMirath(){
+let mali=parseFloat(document.getElementById('mMali').value)||0;
+let mke=document.getElementById('mMke').value;
+let kiume=parseInt(document.getElementById('mKiume').value)||0;
+let kike=parseInt(document.getElementById('mKike').value)||0;
+let mama=document.getElementById('mMama').value;
+let baba=document.getElementById('mBaba').value;
+let msg=`Jumla: ${mali} Pi<br><br>`;
+let baki=mali;
+
+// Rahisi - Mfano wa hesabu ya awali (Kwa Fatwa kamili muulize Alim)
+// Mke
+if(mke==='mke'){ let h=mali*0.125; msg+=`Mke (1/8): ${h.toFixed(2)}<br>`; baki-=h; }
+if(mke==='mume'){ let h=mali*0.25; msg+=`Mume (1/4): ${h.toFixed(2)}<br>`; baki-=h; }
+if(mama==='1'){ let h=mali*(1/6); msg+=`Mama (1/6): ${h.toFixed(2)}<br>`; baki-=h; }
+if(baba==='1'){ let h=mali*(1/6); msg+=`Baba (1/6): ${h.toFixed(2)}<br>`; baki-=h; }
+
+let watoto = kiume + kike;
+if(watoto>0){
+ let sehemu = kiume*2 + kike;
+ let kilaSehemu = baki / (sehemu || 1);
+ if(kiume>0) msg+=`Kila Mtoto Kiume (2x): ${(kilaSehemu*2).toFixed(2)}<br>`;
+ if(kike>0) msg+=`Kila Mtoto Kike (1x): ${kilaSehemu.toFixed(2)}<br>`;
+} else {
+ msg+=`Baki ${baki.toFixed(2)} kwa Asaba (Baba/Kaka)<br>`;
+}
+msg+=`<br><small>Tahadhari: Hii ni hesabu ya awali. Kwa ugawaji halisi muulize Kadhi.</small>`;
+document.getElementById('mResult').style.display='block';
+document.getElementById('mResult').innerHTML=msg;
+}
+
+function payPi(type){
+alert(type.toUpperCase() + ' - Malipo ya Pi yataunganishwa baada ya App kuidhinishwa PiNet. Sasa ni Testnet.');
+}
+
+function setLang(l){
+if(l==='sw'){ document.getElementById('title').innerText='Zakat & Mirath'; }
+if(l==='en'){ document.getElementById('title').innerText='Zakat & Mirath'; }
+if(l==='ar'){ document.getElementById('title').innerText='الزكاة والميراث'; }
+}
+</script>
+</body>
+</html>
