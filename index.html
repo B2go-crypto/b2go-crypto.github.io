@@ -3,46 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zakat & Mirath | B2go-Crypto Pi</title>
+<title>Zakat Mirath & Charity - B2go Crypto</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Inter:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root{--green:#0B6A2B;--gold:#D4AF37;--bg:#F8FBF9}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Inter',system-ui;background:var(--bg);color:#111}
-.header{background:linear-gradient(135deg,#0B6A2B 0%,#0f8a38 100%);color:#fff;padding:18px 14px 28px;text-align:center;position:relative;overflow:hidden}
-.header:before{content:"";position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,0.08);border-radius:50%}
-.arabic-title{font-family:'Amiri',serif;font-size:22px;color:var(--gold);margin-bottom:2px}
-.lang-bar{display:flex;justify-content:center;gap:8px;margin-top:10px}
-.lang-bar button{padding:6px 14px;border:1px solid rgba(255,255,255,0.6);background:rgba(255,255,255,0.12);color:#fff;border-radius:20px;font-weight:600;backdrop-filter:blur(4px)}
-.lang-bar button.active{background:#fff;color:var(--green)}
-.container{max-width:520px;margin:-18px auto 30px;padding:0 14px}
-.card{background:#fff;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,0.08);padding:16px;margin-top:14px;border:1px solid #eef2ef}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.tab{padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;font-weight:700;font-size:14px;letter-spacing:0.5px}
-.tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 12px rgba(11,106,43,0.25)}
-.label{font-size:12px;font-weight:600;color:#6b7280;margin-top:12px;display:block;text-transform:uppercase;letter-spacing:0.5px}
-.input{width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid #e5e7eb;margin-top:6px;font-size:15px}
-.input:focus{border-color:var(--green);outline:none}
-.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:700;font-size:15px;margin-top:14px;cursor:pointer}
-.btn-green{background:var(--green);color:#fff}
-.btn-pi{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;margin-top:10px}
-.info{background:#f0fdf4;border-left:4px solid var(--green);padding:12px;border-radius:10px;font-size:13px;line-height:1.6;color:#374151;margin-top:10px}
-.quran-box{background:#FFFBEB;border:1.5px solid var(--gold);border-radius:12px;padding:14px;margin-top:12px}
-.quran-ar{font-family:'Amiri',serif;font-size:18px;text-align:right;color:#111;line-height:1.8}
-.quran-trans{font-size:12.5px;color:#4b5563;margin-top:8px;line-height:1.6}
-.result{background:#0B6A2B;color:#fff;border-radius:12px;padding:14px;margin-top:14px;display:none}
-.result h4{margin:0 0 6px 0;color:var(--gold)}
-.badge{display:inline-block;background:#fff3d0;color:#8a6a0a;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:6px}
-small{color:#6b7280}
+body{margin:0;font-family:Inter,system-ui;background:#f6faf7}
+.header{background:linear-gradient(135deg,#0B6A2B,#14903a);color:#fff;padding:20px 14px 28px;text-align:center}
+.ar{font-family:Amiri,serif;color:#FFD700;font-size:20px}
+.tabs{display:flex;gap:8px;justify-content:center;margin:14px}
+.tab{flex:1;padding:12px;border-radius:12px;border:1px solid #ddd;background:#fff;font-weight:700}
+.tab.active{background:#0B6A2B;color:#fff}
+.container{max-width:560px;margin:-18px auto;padding:12px}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,0.07);margin-top:12px}
+.label{font-size:12px;color:#666;font-weight:600;margin-top:10px;display:block}
+.input{width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;margin-top:6px}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;margin-top:14px;background:#0B6A2B;color:#fff}
+.btn-pi{background:linear-gradient(90deg,#7c3aed,#4f46e5);color:#fff}
+.info{background:#f0fdf4;border-left:4px solid #0B6A2B;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.6}
+.qbox{background:#FFFBEB;border:1.5px solid #D4AF37;border-radius:10px;padding:12px;margin-top:10px}
+.result{background:#0B6A2B;color:#fff;border-radius:12px;padding:14px;margin-top:12px;display:none}
+.badge{background:#fef3c7;color:#92400e;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.langs button{padding:5px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.6);background:rgba(255,255,255,0.15);color:#fff;margin:2px}
+.langs button.active{background:#fff;color:#0B6A2B}
 </style>
 </head>
 <body>
 <div class="header">
-<div class="arabic-title">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-<h2 style="margin:4px 0" id="hTitle">Zakat & Mirath Calculator</h2>
-<div style="font-size:12px;opacity:0.9">B2go-Crypto • Pi Network • Sharia Compliant</div>
-<div class="lang-bar">
+<div class="ar">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+<h3 id="hTitle" style="margin:6px 0">Zakat, Mirath & Charity Calculator</h3>
+<small>B2go-Crypto | Pi Network | Sharia 100%</small>
+<div class="langs" style="margin-top:10px">
 <button id="bSW" class="active" onclick="setLang('sw')">SW</button>
 <button id="bEN" onclick="setLang('en')">EN</button>
 <button id="bAR" onclick="setLang('ar')">العربية</button>
@@ -51,70 +41,54 @@ small{color:#6b7280}
 
 <div class="container">
 <div class="tabs">
-<button id="tZ" class="tab active" onclick="showTab('zakat')">📊 ZAKAT</button>
-<button id="tM" class="tab" onclick="showTab('mirath')">⚖️ MIRATH</button>
+<button id="tZ" class="tab active" onclick="showTab('zakat')">ZAKAT</button>
+<button id="tM" class="tab" onclick="showTab('mirath')">MIRATH</button>
+<button id="tC" class="tab" onclick="showTab('charity')">CHARITY</button>
 </div>
 
 <!-- ZAKAT -->
 <div id="zakatTab" class="card">
-<div class="badge" id="zBadge">NGUZO YA 3 YA UISLAMU</div>
-<h3 style="margin:6px 0" id="zTitle">Hesabu ya Zakat</h3>
-<div class="info" id="zInfo">Zakat ni 2.5% ya mali iliyofikia Nisab (85g Dhahabu ~ TZS 8.5M) na kukaa Haul (mwaka 1). Nguzo ya utakaso wa mali.</div>
-
-<label class="label" id="lWealth">Thamani ya Jumla ya Mali (TZS / Pi)</label>
-<input class="input" type="number" id="wealth" placeholder="Mf: 10,000,000">
-<label class="label" id="lNisab">Thamani ya Nisab Leo</label>
-<input class="input" type="number" id="nisab" value="8500000">
-
-<button class="btn btn-green" onclick="calcZakat()" id="bCalcZ">Hesabu Zakat Sasa</button>
+<span class="badge" id="zBadge">NGUZO YA 3</span>
+<h3 id="zTitle">Hesabu ya Zakat</h3>
+<div class="info" id="zInfo">Zakat ni 2.5% ya mali iliyofikia Nisab (85g Dhahabu) na kuhifadhiwa Haul (mwaka 1). Utakaso wa mali.</div>
+<label class="label" id="lWealth">Mali Yote (TZS / Pi)</label>
+<input class="input" id="wealth" type="number" placeholder="10000000">
+<label class="label" id="lNisab">Nisab (85g Gold)</label>
+<input class="input" id="nisab" type="number" value="8500000">
+<button class="btn" id="bCalcZ" onclick="calcZakat()">Hesabu Zakat</button>
 <div id="zResult" class="result"></div>
 </div>
 
 <!-- MIRATH -->
 <div id="mirathTab" class="card" style="display:none">
-<div class="badge" id="mBadge">QUR'AN AN-NISA 11-12</div>
-<h3 style="margin:6px 0" id="mTitle">Hesabu ya Mirath</h3>
-
-<div class="quran-box">
-<div class="quran-ar" id="qAr">يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ</div>
-<div class="quran-trans" id="qTrans">Mwenyezi Mungu anakuusieni kuhusu watoto wenu: Mtoto wa kiume apate sehemu sawa na ya watoto wawili wa kike. Mzazi akifa na ana watoto, wazazi wake kila mmoja apate 1/6. Mke afiwa na mume bila mtoto apate 1/4, akiwa na mtoto apate 1/8. Mume afiwa na mke bila mtoto apate 1/2, akiwa na mtoto apate 1/4.</div>
+<span class="badge">AN-NISA 11-12</span>
+<h3 id="mTitle">Hesabu ya Mirath</h3>
+<div class="qbox">
+<div style="font-family:Amiri,serif;font-size:18px;text-align:right">يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ</div>
+<div style="font-size:12.5px;margin-top:6px;color:#444" id="qTrans">Mwenyezi Mungu anakuusieni: Mtoto wa kiume apate sawa na sehemu ya watoto wawili wa kike. Mzazi akifa na ana watoto, wazazi kila mmoja 1/6. Mke bila mtoto 1/4, na mtoto 1/8. Mume bila mtoto 1/2, na mtoto 1/4.</div>
 </div>
-
-<div class="info" id="mInfo"><b>Kanuni Kuu:</b> 1) Malipo ya deni na wasia kwanza. 2) Kisha mgawo wa Mirath. 3) Mwanaume 2x ya mwanamke kwa watoto. Hii ni Haki ya Allah, sio mapenzi ya binadamu.</div>
-
-<label class="label" id="lEstate">Mali ya Marehemu Halali</label>
-<input class="input" type="number" id="estate" placeholder="Mf: 20,000,000">
-<label class="label" id="lHeirs">Aina ya Warithi</label>
+<label class="label">Mali ya Marehemu</label>
+<input class="input" id="estate" type="number" placeholder="20000000">
+<label class="label">Warithi</label>
 <select class="input" id="heirs">
-<option value="sons_daughters">👨‍👧‍👦 Wana Wakiume + Wakike (2:1)</option>
-<option value="wife_children">🧕 Mke + Watoto (Mke 1/8)</option>
-<option value="husband_children">👳 Mume + Watoto (Mume 1/4)</option>
-<option value="parents_children">👴 Wazazi + Watoto (Mzazi 1/6)</option>
-<option value="wife_only">🧕 Mke Pekee (1/4 bila mtoto)</option>
-<option value="husband_only">👳 Mume Pekee (1/2 bila mtoto)</option>
+<option value="sons_daughters">Wana Wakiume + Wakike (2:1)</option>
+<option value="wife_children">Mke + Watoto (Mke 1/8)</option>
+<option value="husband_children">Mume + Watoto (Mume 1/4)</option>
+<option value="parents_children">Wazazi + Watoto (1/6)</option>
 </select>
-
-<button class="btn btn-green" onclick="calcMirath()" id="bCalcM">Gawa Mirathi Kisheria</button>
+<button class="btn" onclick="calcMirath()">Gawa Mirathi</button>
 <div id="mResult" class="result"></div>
-<div class="info" style="margin-top:12px"><small id="mNote">⚠️ Kumbuka: Hii ni hesabu ya kielimu. Kwa Fatwa ya mwisho, muulize Kadhi au Mwanachuoni wa Fiqh ya Mirath. Wasia usizidi 1/3.</small></div>
 </div>
 
-<button class="btn btn-pi" onclick="payPi()">💜 Lipa Zakat / Sadaqa kwa Pi (Pi Payment)</button>
-<div style="text-align:center;margin-top:14px"><small>zakatmirath3160.pinet.com • 100% Sharia • No Riba</small></div>
-</div>
-
-<script>
-let lang='sw';
-const T={
-sw:{hTitle:"Zakat & Mirath Calculator",zBadge:"NGUZO YA 3 YA UISLAMU",zTitle:"Hesabu ya Zakat",zInfo:"Zakat ni 2.5% ya mali iliyofikia Nisab (85g Dhahabu ~ TZS 8.5M) na kukaa Haul (mwaka 1). Nguzo ya utakaso wa mali.",lWealth:"Thamani ya Jumla ya Mali (TZS / Pi)",lNisab:"Thamani ya Nisab Leo",bCalcZ:"Hesabu Zakat Sasa",mBadge:"QUR'AN AN-NISA 11-12",mTitle:"Hesabu ya Mirath",qAr:"يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ",qTrans:"Mwenyezi Mungu anakuusieni kuhusu watoto wenu: Mtoto wa kiume apate sehemu sawa na ya watoto wawili wa kike. Mzazi akifa na ana watoto, wazazi wake kila mmoja apate 1/6. Mke afiwa na mume bila mtoto apate 1/4, akiwa na mtoto apate 1/8. Mume afiwa na mke bila mtoto apate 1/2, akiwa na mtoto apate 1/4.",mInfo:"<b>Kanuni Kuu:</b> 1) Malipo ya deni na wasia kwanza. 2) Kisha mgawo wa Mirath. 3) Mwanaume 2x ya mwanamke kwa watoto. Hii ni Haki ya Allah, sio mapenzi ya binadamu.",lEstate:"Mali ya Marehemu Halali",lHeirs:"Aina ya Warithi",bCalcM:"Gawa Mirathi Kisheria",mNote:"⚠️ Kumbuka: Hii ni hesabu ya kielimu. Kwa Fatwa ya mwisho, muulize Kadhi au Mwanachuoni wa Fiqh ya Mirath. Wasia usizidi 1/3.",noZ:"Mali haijafikia Nisab, Hakuna Zakat.",yesZ:"Zakat Inayostahili:"},
-en:{hTitle:"Zakat & Mirath Calculator",zBadge:"3RD PILLAR OF ISLAM",zTitle:"Zakat Calculator",zInfo:"Zakat is 2.5% of wealth reaching Nisab (85g Gold) and held for 1 lunar year (Haul). Purification of wealth.",lWealth:"Total Wealth (TZS / Pi)",lNisab:"Current Nisab Value",bCalcZ:"Calculate Zakat Now",mBadge:"QUR'AN AN-NISA 11-12",mTitle:"Mirath Calculator",qAr:"يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ",qTrans:"Allah instructs you concerning your children: for the male, what is equal to the share of two females. For parents, each 1/6 if deceased has children. Wife 1/4 without child, 1/8 with child. Husband 1/2 without child, 1/4 with child.",mInfo:"<b>Key Rule:</b> 1) Pay debts & wasiyya first. 2) Then Mirath distribution. 3) Son gets 2x daughter. This is Allah's Right.",lEstate:"Deceased Halal Estate",lHeirs:"Type of Heirs",bCalcM:"Distribute Mirath by Sharia",mNote:"⚠️ Note: This is educational. For final Fatwa, consult a Qadhi or Mirath scholar. Wasiyya max 1/3.",noZ:"Wealth below Nisab, No Zakat.",yesZ:"Zakat Due:"},
-ar:{hTitle:"حاسبة الزكاة والميراث",zBadge:"الركن الثالث للإسلام",zTitle:"حساب الزكاة",zInfo:"الزكاة 2.5% من المال إذا بلغ النصاب (85غ ذهب) وحال عليه الحول. تطهير للمال.",lWealth:"إجمالي المال",lNisab:"قيمة النصاب الحالية",bCalcZ:"احسب الزكاة الآن",mBadge:"القرآن النساء 11-12",mTitle:"حساب الميراث",qAr:"يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ",qTrans:"يوصيكم الله في أولادكم للذكر مثل حظ الأنثيين، وللأبوين لكل واحد السدس إن كان له ولد، للزوجة الربع إن لم يكن ولد والثمن إن كان ولد، للزوج النصف إن لم يكن ولد والربع إن كان ولد.",mInfo:"<b>القاعدة:</b> 1) سداد الدين والوصية أولاً. 2) ثم قسمة الميراث. 3) للذكر مثل حظ الأنثيين. هذا حق الله.",lEstate:"تركة المتوفى الحلال",lHeirs:"نوع الورثة",bCalcM:"قسمة الميراث شرعاً",mNote:"⚠️ تنبيه: هذا حساب تعليمي. للفتوى النهائية راجع القاضي أو عالم الميراث. الوصية لا تزيد عن الثلث.",noZ:"المال لم يبلغ النصاب، لا زكاة.",yesZ:"الزكاة المستحقة:"}
-};
-function setLang(l){lang=l;let t=T[l];document.getElementById('hTitle').innerText=t.hTitle;document.getElementById('zBadge').innerText=t.zBadge;document.getElementById('zTitle').innerText=t.zTitle;document.getElementById('zInfo').innerText=t.zInfo;document.getElementById('lWealth').innerText=t.lWealth;document.getElementById('lNisab').innerText=t.lNisab;document.getElementById('bCalcZ').innerText=t.bCalcZ;document.getElementById('mBadge').innerText=t.mBadge;document.getElementById('mTitle').innerText=t.mTitle;document.getElementById('qAr').innerText=t.qAr;document.getElementById('qTrans').innerText=t.qTrans;document.getElementById('mInfo').innerHTML=t.mInfo;document.getElementById('lEstate').innerText=t.lEstate;document.getElementById('lHeirs').innerText=t.lHeirs;document.getElementById('bCalcM').innerText=t.bCalcM;document.getElementById('mNote').innerText=t.mNote;document.getElementById('bSW').className=l=='sw'?'active':'';document.getElementById('bEN').className=l=='en'?'active':'';document.getElementById('bAR').className=l=='ar'?'active':'';document.documentElement.dir=l=='ar'?'rtl':'ltr';}
-function showTab(x){document.getElementById('zakatTab').style.display=x=='zakat'?'block':'none';document.getElementById('mirathTab').style.display=x=='mirath'?'block':'none';document.getElementById('tZ').className=x=='zakat'?'tab active':'tab';document.getElementById('tM').className=x=='mirath'?'tab active':'tab';}
-function calcZakat(){let w=parseFloat(document.getElementById('wealth').value)||0;let n=parseFloat(document.getElementById('nisab').value)||0;let r=document.getElementById('zResult');r.style.display='block';if(w<n){r.innerHTML="<h4>💡 "+T[lang].noZ+"</h4><small>Nisab: "+n.toLocaleString()+"</small>";}else{let z=w*0.025;r.innerHTML="<h4>"+T[lang].yesZ+"</h4><div style='font-size:26px;font-weight:800'>"+z.toLocaleString()+"</div><small>2.5% ya "+w.toLocaleString()+"</small>";}}
-function calcMirath(){let e=parseFloat(document.getElementById('estate').value)||0;let h=document.getElementById('heirs').value;let r=document.getElementById('mResult');r.style.display='block';let html="";if(h=='sons_daughters'){html="<h4>👨‍👧‍👦 Watoto: 2:1</h4> Mwanaume 2/3 = "+(e*2/3).toLocaleString()+"<br>Mwanamke 1/3 = "+(e*1/3).toLocaleString()+"<br><small>Dalili: An-Nisa 11</small>";}else if(h=='wife_children'){html="<h4>🧕 Mke + Watoto</h4>Mke: 1/8 = "+(e/8).toLocaleString()+"<br>Mabaki 7/8 = "+(e*7/8).toLocaleString()+" kwa watoto (2:1)";}else if(h=='husband_children'){html="<h4>👳 Mume + Watoto</h4>Mume: 1/4 = "+(e/4).toLocaleString()+"<br>Mabaki 3/4 = "+(e*3/4).toLocaleString()+" kwa watoto";}else if(h=='parents_children'){html="<h4>👴 Wazazi + Watoto</h4>Kila Mzazi: 1/6 = "+(e/6).toLocaleString()+"<br>Mabaki 4/6 kwa watoto";}else if(h=='wife_only'){html="<h4>🧕 Mke Pekee (Bila Mtoto)</h4>Mke: 1/4 = "+(e/4).toLocaleString()+"<br>Mabaki kwa warithi wengine";}else{html="<h4>👳 Mume Pekee (Bila Mtoto)</h4>Mume: 1/2 = "+(e/2).toLocaleString()+"<br>Mabaki kwa warithi wengine";}r.innerHTML=html;}
-function payPi(){if(window.Pi){Pi.authenticate([],(a)=>{Pi.createPayment({amount:0.01,memo:"Zakat B2go-Crypto",metadata:{type:"zakat"}},{onReadyForServerApproval:(id)=>{},onReadyForServerCompletion:(id,tx)=>{alert("Shukran! Pi Imepokelewa")},onCancel:()=>{},onError:()=>{}});});}else{alert("Fungua kwa Pi Browser kulipa kwa Pi");}}
-</script>
-</body>
-</html>
+<!-- CHARITY -->
+<div id="charityTab" class="card" style="display:none">
+<span class="badge">AT-TAWBA 60</span>
+<h3 id="cTitle">Charity & Sadaqah</h3>
+<div class="info" id="cInfo">Qur'an 9:60 - Zakat inastahili kwa makundi 8: 1) Mafakiri, 2) Masikini, 3) Amilina عليها, 4) Muallafatu Qulubuhum, 5) Riqab (kuwafungua watumwa), 6) Gharimina (wenye deni), 7) Fi Sabilillah, 8) Ibnu Sabil (msafiri).</div>
+<label class="label">Kiasi cha Sadaqah / Charity</label>
+<input class="input" id="charityAmt" type="number" placeholder="50000">
+<label class="label">Lengo la Charity</label>
+<select class="input" id="charityTo">
+<option>Fakir / Masikini</option>
+<option>Yatima / Yatima Center</option>
+<option>Misik
