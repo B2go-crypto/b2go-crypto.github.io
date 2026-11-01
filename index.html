@@ -3,39 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zakat Mirath Sadaqah - Sharia Calculator</title>
+<title>Zakat Mirath Sadaqah - Sharia</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Inter,sans-serif;background:#f6faf7;color:#1f2937}
-.header{background:linear-gradient(135deg,#0B6A2B,#14903a);color:#fff;padding:22px 16px 20px;text-align:center}
-.header h1{margin:6px 0 2px;font-size:22px}
-.ar{font-family:Amiri,serif;font-size:22px;color:#FFD700}
+body{margin:0;font-family:system-ui;background:#f6faf7;color:#222}
+.header{background:#0B6A2B;color:#fff;padding:20px;text-align:center}
 .langs{margin-top:12px}
-.langs button{padding:6px 14px;margin:2px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.15);color:#fff;border-radius:20px;font-weight:700;font-size:12px}
+.langs button{padding:7px 14px;margin:3px;border:1px solid #ffffff80;background:rgba(255,255,255,.15);color:#fff;border-radius:20px;font-weight:700}
 .langs button.active{background:#fff;color:#0B6A2B}
-.container{max-width:560px;margin:0 auto;padding:14px}
-.card{background:#fff;border-radius:18px;padding:18px;margin-top:18px;box-shadow:0 6px 24px rgba(0,0,0,0.06);border:1px solid #eef2ee}
-.card h2{margin:0 0 6px;font-size:18px;color:#0B6A2B;display:flex;align-items:center;gap:8px}
-.badge{background:#0B6A2B;color:#fff;font-size:10px;padding:3px 8px;border-radius:20px}
-.label{font-size:12px;font-weight:600;color:#6b7280;margin-top:12px;display:block}
-.input{width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:10px;margin-top:6px;font-size:15px}
-.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px}
+.container{max-width:560px;margin:auto;padding:14px}
+.card{background:#fff;border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.input{width:100%;padding:12px;border:1.5px solid #ddd;border-radius:10px;margin-top:6px}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer}
 .btn-green{background:#0B6A2B;color:#fff}
-.btn-gold{background:linear-gradient(90deg,#D4AF37,#FFD700);color:#000}
-.btn-outline{background:#f9fafb;border:1px dashed #0B6A2B;color:#0B6A2B}
-.result{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px;margin-top:12px;font-weight:700;display:none}
-.info{background:#FFFBEB;border-left:4px solid #D4AF37;padding:10px 12px;border-radius:8px;font-size:13px;line-height:1.6;margin-top:12px;color:#444}
-details{margin-top:10px;background:#f9fafb;border-radius:10px;padding:10px}
-details summary{font-weight:700;font-size:13px;color:#0B6A2B;cursor:pointer}
-.qur{font-family:Amiri,serif;font-size:17px;text-align:right;line-height:1.8}
+.btn-gold{background:#D4AF37;color:#000}
+.result{display:none;background:#e8f5e9;padding:12px;border-radius:10px;margin-top:10px;font-weight:700}
+.info{background:#FFFBEB;border-left:4px solid #D4AF37;padding:10px;border-radius:8px;font-size:13px;margin-top:10px}
+details{margin-top:10px;background:#f9fafb;padding:10px;border-radius:10px}
 </style>
 </head>
 <body>
 <div class="header">
-<div class="ar">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
 <h1 id="mainTitle">Zakat • Mirath • Sadaqah</h1>
-<p id="subTitle" style="font-size:12px;opacity:.9">Hesabu za Ki-Sharia 100% - Pi Network</p>
+<p id="subTitle">Hesabu za Ki-Sharia 100% - Pi Network</p>
 <div class="langs">
 <button id="bSW" class="active" onclick="setLang('sw')">Kiswahili</button>
 <button id="bEN" onclick="setLang('en')">English</button>
@@ -45,140 +35,56 @@ details summary{font-weight:700;font-size:13px;color:#0B6A2B;cursor:pointer}
 
 <div class="container">
 
-<!-- 1. ZAKAT -->
+<!-- ZAKAT -->
 <div class="card">
-<h2><span class="badge">1</span> <span id="tZakat">ZAKAT</span></h2>
-<p id="dZakat" style="font-size:12px;color:#666">Nguzo ya 3 ya Uislamu. Wajibu kwa kila Muislamu mwenye mali iliyofikia Nisab.</p>
-<label class="label" id="lMali">Jumla ya Mali (Pi / TZS)</label>
-<input class="input" id="zMali" type="number" placeholder="1000" value="1000">
-<label class="label" id="lNisab">Nisab (85g Gold) - Kiwango cha chini</label>
+<h2 id="tZakat">1. ZAKAT - Hesabu ya Zakat</h2>
+<p id="dZakat" style="font-size:12px;color:#666">Nguzo ya 3. Wajibu kwa mali iliyofikia Nisab.</p>
+<label id="lMali">Jumla ya Mali (Pi)</label>
+<input class="input" id="zMali" type="number" value="1000">
+<label id="lNisab">Nisab (85g Gold)</label>
 <input class="input" id="zNisab" type="number" value="85">
 <div class="result" id="zResult"></div>
 <button class="btn btn-green" id="bCalcZ" onclick="calcZakat()">Hesabu Zakat (2.5%)</button>
-<div class="info" id="infoZakat">
-<b>Maelezo ya Zakat:</b><br>
-• Zakat = 2.5% ya mali iliyokaa Haul (mwaka 1 wa Kiislamu).<br>
-• Nisab = 85g Dhahabu (~sawa na 595g Fedha).<br>
-• Zakat husafisha mali na roho (At-Tawba 103).<br>
-• Hulipiwa kwa makundi 8 yaliyotajwa Qur'an 9:60.
-</div>
+<div class="info" id="infoZakat">Maelezo: Zakat ni 2.5% ya mali iliyokaa Haul (mwaka 1). Nisab = 85g Dhahabu. Husafisha mali (At-Tawba 103). Hulipiwa makundi 8 (9:60).</div>
 </div>
 
-<!-- 2. MIRATH -->
+<!-- MIRATH -->
 <div class="card">
-<h2><span class="badge">2</span> <span id="tMirath">MIRATH - Urithi</span></h2>
-<p id="dMirath" style="font-size:12px;color:#666">Ugawaji wa mali ya marehemu kwa mujibu wa Qur'an An-Nisa 11-12.</p>
-<div class="info" style="background:#f0fdf4;border-left-color:#0B6A2B">
-<div class="qur">يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ</div>
-<small id="qTafsiri">Mwenyezi Mungu anakuusieni: Mtoto wa kiume apate sawa na sehemu ya watoto wawili wa kike.</small>
-</div>
-<label class="label">Mali ya Marehemu</label>
-<input class="input" id="mMali" type="number" placeholder="10000" value="10000">
-<label class="label" id="lMke">Mke / Mume</label>
-<select class="input" id="mMke">
-<option value="0">Hakuna</option>
-<option value="mke">Mke 1 (1/8 na mtoto, 1/4 bila)</option>
-<option value="mume">Mume (1/4 na mtoto, 1/2 bila)</option>
-</select>
-<label class="label">Watoto Kiume / Kike</label>
-<div style="display:flex;gap:8px">
-<input class="input" id="mKiume" type="number" placeholder="Wanaume" value="1">
-<input class="input" id="mKike" type="number" placeholder="Wanawake" value="1">
-</div>
+<h2 id="tMirath">2. MIRATH - Urithi</h2>
+<p id="dMirath" style="font-size:12px;color:#666">Ugawaji kwa mujibu wa An-Nisa 11-12.</p>
+<label>Mali ya Marehemu (Pi)</label>
+<input class="input" id="mMali" type="number" value="1000">
+<label id="lMke">Mke / Mume</label>
+<select class="input" id="mMke"><option value="0">Hakuna</option><option value="mke">Mke 1</option><option value="mume">Mume</option></select>
+<div style="display:flex;gap:8px"><input class="input" id="mKiume" type="number" value="1" placeholder="Kiume"><input class="input" id="mKike" type="number" value="1" placeholder="Kike"></div>
 <div class="result" id="mResult"></div>
-<button class="btn btn-green" onclick="calcMirath()">Gawa Mirath kwa Sharia</button>
-
-<details>
-<summary id="sMirath">📖 Bonyeza kuona Maelezo kamili kuhusu Mirath na Ugawaji</summary>
-<div id="infoMirath" style="font-size:13px;line-height:1.7;margin-top:8px">
-<b>Kanuni za Mirath (An-Nisa 11-12, 176):</b><br>
-1. <b>Watoto:</b> Mtoto wa kiume 2 sehemu, wa kike 1 sehemu (2:1).<br>
-2. <b>Mke:</b> 1/8 akina mtoto, 1/4 hakina mtoto.<br>
-3. <b>Mume:</b> 1/4 akina mtoto, 1/2 hakina mtoto.<br>
-4. <b>Mama:</b> 1/6 akina mtoto/watoto wa marehemu wapo, 1/3 hakuna.<br>
-5. <b>Baba:</b> 1/6 na mabaki kama Asaba.<br>
-<b>Tahadhari:</b> Hii ni hesabu ya awali. Kwa Hukumu kamili muulize Kadhi/Mufti.
-</div>
-</details>
+<button class="btn btn-green" onclick="calcMirath()">Gawa Mirath</button>
+<details><summary id="sMirath">📖 Maelezo kuhusu Mirath na Ugawaji</summary><div id="infoMirath" style="font-size:13px;margin-top:8px">Mwanaume 2:1 dhidi ya mwanamke. Mke 1/8 na mtoto, 1/4 bila. Mume 1/4 na mtoto, 1/2 bila. Mama/Baba 1/6. Hii ni hesabu ya awali, muulize Kadhi kwa hukumu kamili.</div></details>
 </div>
 
-<!-- 3. SADAQAH -->
+<!-- SADAQAH -->
 <div class="card">
-<h2><span class="badge">3</span> <span id="tSadaqa">SADAQAH / CHARITY</span></h2>
-<p id="dSadaqa" style="font-size:12px;color:#666">Hiari kwa ajili ya Allah - kuwasaidia wenye uhitaji na walimu wa Madrasa.</p>
-<label class="label" id="lSadaqa">Kiasi cha Sadaqah (Pi)</label>
-<input class="input" id="sMali" type="number" placeholder="10" value="10">
-<label class="label" id="lLengo">Lengo la Sadaqah</label>
-<select class="input" id="sTo">
-<option>Wenye Uhitaji / Masikini</option>
-<option>Yatima</option>
-<option>Walimu wa Madrasa</option>
-<option>Misikiti / Madrasa</option>
-<option>Fi Sabilillah</option>
-<option>Wenye Deni</option>
-</select>
-<div class="result" id="sResult" style="display:block;background:#FFFBEB;border-color:#fcd34d">Nia: 10 Pi kwa Wenye Uhitaji</div>
-<button class="btn btn-gold" onclick="payPi()">💜 Changia Sadaqah kwa Pi Network</button>
-
-<details>
-<summary id="sSadaqa">❤️ Bonyeza Maelezo: Kwa nini tuchangie Sadaqah kwa hiari?</summary>
-<div id="infoSadaqa" style="font-size:13px;line-height:1.7;margin-top:8px">
-<b>Sadaqah ni hiari, sio lazima kama Zakat.</b><br><br>
-Qur'an 2:261: <i>"Mfano wa wanaotoa mali zao katika njia ya Allah ni kama punje moja iliyoota mashuke saba, katika kila shuke punje mia..."</i><br><br>
-<b>Malengo yetu:</b><br>
-• Kusaidia <b>watu wenye uhitaji</b> (Fakiri, Masikini)<br>
-• Kusaidia <b>Walimu wa Madrasa</b> wanaofundisha Qur'an bila mshahara<br>
-• Kujenga Misikiti na Madrasa<br>
-• Malipo ni hiari, Allah atakulipa mara 700.<br><br>
-<b>100% ya Sadaqah inakwenda moja kwa moja kwa wahitaji kupitia Pi.</b>
-</div>
-</details>
+<h2 id="tSadaqa">3. SADAQAH / CHARITY</h2>
+<p id="dSadaqa" style="font-size:12px;color:#666">Hiari kwa ajili ya Allah - kuwasaidia wenye uhitaji na walimu wa MADRASA.</p>
+<label id="lSadaqa">Kiasi cha Sadaqah (Pi)</label>
+<input class="input" id="sMali" type="number" value="5">
+<label id="lLengo">Lengo</label>
+<select class="input" id="sTo"><option>Wenye Uhitaji</option><option>Yatima</option><option>Walimu wa MADRASA</option><option>Misikiti</option><option>Fi Sabilillah</option></select>
+<div class="result" id="sResult" style="display:block">Nia: 5 Pi kwa Wenye Uhitaji</div>
+<button class="btn btn-gold" onclick="payPi()">💜 Changia Sadaqah kwa Pi</button>
+<details><summary id="sSadaqa">❤️ Maelezo: Changia Sadaqah kwa hiari - Wenye Uhitaji & Walimu wa MADRASA</summary><div id="infoSadaqa" style="font-size:13px;margin-top:8px">Sadaqah ni hiari sio lazima. Qur'an 2:261 - mfano wa punje 1 kutoa mashuke 7. Lengo: kusaidia masikini, yatima, na walimu wa Madrasa wanaofundisha Qur'an bila mshahara. 100% inakwenda moja kwa moja. Allah atakulipa mara 700.</div></details>
 </div>
 
-<div style="text-align:center;padding:20px"><small style="color:#999">B2go-Crypto | zakatmirath3160.pinet.com | Sharia 100% Halal</small></div>
 </div>
 
 <script>
 const L={
-sw:{
-mainTitle:"Zakat • Mirath • Sadaqah",
-subTitle:"Hesabu za Ki-Sharia 100% - Pi Network",
-tZakat:"ZAKAT - Hesabu ya Zakat",
-dZakat:"Nguzo ya 3 ya Uislamu. Wajibu kwa kila Muislamu mwenye mali iliyofikia Nisab.",
-lMali:"Jumla ya Mali (Pi / TZS)",lNisab:"Nisab (85g Gold) - Kiwango cha chini",bCalcZ:"Hesabu Zakat (2.5%)",
-tMirath:"MIRATH - Urithi",dMirath:"Ugawaji wa mali ya marehemu kwa mujibu wa Qur'an An-Nisa 11-12.",
-lMke:"Mke / Mume",sMirath:"📖 Bonyeza kuona Maelezo kamili kuhusu Mirath na Ugawaji",
-tSadaqa:"SADAQAH / CHARITY",dSadaqa:"Hiari kwa ajili ya Allah - kuwasaidia wenye uhitaji na walimu wa Madrasa.",
-lSadaqa:"Kiasi cha Sadaqah (Pi)",lLengo:"Lengo la Sadaqah",sSadaqa:"❤️ Bonyeza Maelezo: Kwa nini tuchangie Sadaqah kwa hiari?",
-qTafsiri:"Mwenyezi Mungu anakuusieni: Mtoto wa kiume apate sawa na sehemu ya watoto wawili wa kike."
-},
-en:{
-mainTitle:"Zakat • Mirath • Sadaqah",
-subTitle:"100% Sharia Compliant - Pi Network",
-tZakat:"ZAKAT - Zakat Calculator",
-dZakat:"3rd Pillar of Islam. Obligatory for wealth reaching Nisab.",
-lMali:"Total Wealth (Pi / TZS)",lNisab:"Nisab (85g Gold) - Minimum",bCalcZ:"Calculate Zakat (2.5%)",
-tMirath:"MIRATH - Inheritance",dMirath:"Distribution according to Qur'an An-Nisa 11-12.",
-lMke:"Wife / Husband",sMirath:"📖 Click for full Mirath explanation and shares",
-tSadaqa:"SADAQAH / CHARITY",dSadaqa:"Voluntary for Allah - to help needy and Madrasa teachers.",
-lSadaqa:"Sadaqah Amount (Pi)",lLengo:"Purpose",sSadaqa:"❤️ Why give voluntary Sadaqah?",
-qTafsiri:"Allah instructs you: male share equal to two females."
-},
-ar:{
-mainTitle:"الزكاة • الميراث • الصدقة",
-subTitle:"حاسبة شرعية 100% - شبكة Pi",
-tZakat:"الزكاة - حساب الزكاة",
-dZakat:"الركن الثالث. واجبة إذا بلغ المال النصاب.",
-lMali:"إجمالي المال (Pi)",lNisab:"النصاب (85غ ذهب)",bCalcZ:"احسب الزكاة (2.5%)",
-tMirath:"الميراث",dMirath:"توزيع التركة حسب القرآن النساء 11-12.",
-lMke:"الزوجة / الزوج",sMirath:"📖 اضغط لمعرفة تفاصيل الميراث",
-tSadaqa:"الصدقة",dSadaqa:"تطوع لله - لمساعدة المحتاجين ومعلمي المدارس القرآنية.",
-lSadaqa:"مبلغ الصدقة (Pi)",lLengo:"الغرض",sSadaqa:"❤️ لماذا نتصدق تطوعا؟",
-qTafsiri:"يوصيكم الله في أولادكم للذكر مثل حظ الأنثيين."
-}
+sw:{mainTitle:"Zakat • Mirath • Sadaqah",subTitle:"Hesabu za Ki-Sharia 100% - Pi Network",tZakat:"1. ZAKAT - Hesabu ya Zakat",dZakat:"Nguzo ya 3. Wajibu kwa mali iliyofikia Nisab.",lMali:"Jumla ya Mali (Pi)",lNisab:"Nisab (85g Gold)",bCalcZ:"Hesabu Zakat (2.5%)",tMirath:"2. MIRATH - Urithi",dMirath:"Ugawaji kwa mujibu wa An-Nisa 11-12.",lMke:"Mke / Mume",sMirath:"📖 Maelezo kuhusu Mirath na Ugawaji",tSadaqa:"3. SADAQAH / CHARITY",dSadaqa:"Hiari kwa ajili ya Allah - kuwasaidia wenye uhitaji na walimu wa MADRASA.",lSadaqa:"Kiasi cha Sadaqah (Pi)",lLengo:"Lengo",sSadaqa:"❤️ Maelezo: Changia Sadaqah kwa hiari - Wenye Uhitaji & Walimu wa MADRASA",qTafsiri:"Mtoto wa kiume apate sawa na sehemu ya watoto wawili wa kike."},
+en:{mainTitle:"Zakat • Mirath • Sadaqah",subTitle:"100% Sharia Calculator - Pi Network",tZakat:"1. ZAKAT - Zakat Calculator",dZakat:"3rd Pillar. Obligatory if wealth reaches Nisab.",lMali:"Total Wealth (Pi)",lNisab:"Nisab (85g Gold)",bCalcZ:"Calculate Zakat (2.5%)",tMirath:"2. MIRATH - Inheritance",dMirath:"Distribution per Qur'an An-Nisa 11-12.",lMke:"Wife / Husband",sMirath:"📖 Details about Mirath and shares",tSadaqa:"3. SADAQAH / CHARITY",dSadaqa:"Voluntary for Allah - to help needy & MADRASA teachers.",lSadaqa:"Sadaqah Amount (Pi)",lLengo:"Purpose",sSadaqa:"❤️ Details: Donate Sadaqah voluntarily - Needy & MADRASA teachers",qTafsiri:"Male gets share of two females."},
+ar:{mainTitle:"الزكاة • الميراث • الصدقة",subTitle:"حاسبة شرعية 100% - Pi",tZakat:"١. الزكاة",dZakat:"الركن الثالث. واجبة إذا بلغ النصاب.",lMali:"إجمالي المال (Pi)",lNisab:"النصاب (85غ ذهب)",bCalcZ:"احسب الزكاة",tMirath:"٢. الميراث",dMirath:"توزيع حسب النساء 11-12.",lMke:"الزوجة / الزوج",sMirath:"📖 تفاصيل الميراث",tSadaqa:"٣. الصدقة",dSadaqa:"تطوع لله - للمحتاجين ومعلمي المدارس.",lSadaqa:"مبلغ الصدقة",lLengo:"الغرض",sSadaqa:"❤️ تفاصيل الصدقة التطوعية",qTafsiri:"للذكر مثل حظ الأنثيين."}
 };
 function setLang(l){
-let t=L[l];
+let t=L[l]; if(!t) return;
 document.getElementById('mainTitle').innerText=t.mainTitle;
 document.getElementById('subTitle').innerText=t.subTitle;
 document.getElementById('tZakat').innerText=t.tZakat;
@@ -195,12 +101,36 @@ document.getElementById('dSadaqa').innerText=t.dSadaqa;
 document.getElementById('lSadaqa').innerText=t.lSadaqa;
 document.getElementById('lLengo').innerText=t.lLengo;
 document.getElementById('sSadaqa').innerText=t.sSadaqa;
-document.getElementById('qTafsiri').innerText=t.qTafsiri;
-document.getElementById('bSW').className=l=='sw'?'active':'';document.getElementById('bEN').className=l=='en'?'active':'';document.getElementById('bAR').className=l=='ar'?'active':'';
-document.body.dir=l=='ar'?'rtl':'ltr';
+document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));
+document.getElementById('bSW').classList.remove('active');document.getElementById('bEN').classList.remove('active');document.getElementById('bAR').classList.remove('active');
+if(l=='sw') document.getElementById('bSW').classList.add('active');
+if(l=='en') document.getElementById('bEN').classList.add('active');
+if(l=='ar') document.getElementById('bAR').classList.add('active');
+document.body.dir = l=='ar'?'rtl':'ltr';
 }
 function calcZakat(){
 let mali=parseFloat(document.getElementById('zMali').value)||0;
 let nisab=parseFloat(document.getElementById('zNisab').value)||85;
-let r=document.getElementById('zResult');r.style.display='block';
-if
+let r=document.getElementById('zResult'); r.style.display='block';
+if(mali<nisab) r.innerHTML="Hakuna Zakat - chini ya Nisab";
+else r.innerHTML="Zakat: <b>"+(mali*0.025).toFixed(2)+" Pi</b>";
+}
+function calcMirath(){
+let mali=parseFloat(document.getElementById('mMali').value)||0;
+let mke=document.getElementById('mMke').value;
+let kiume=parseInt(document.getElementById('mKiume').value)||0;
+let kike=parseInt(document.getElementById('mKike').value)||0;
+let baki=mali; let html="";
+if(mke=='mke'){let h=mali*0.125;html+=`Mke 1/8=${h.toFixed(2)}<br>`;baki-=h;}
+if(mke=='mume'){let h=mali*0.25;html+=`Mume 1/4=${h.toFixed(2)}<br>`;baki-=h;}
+let sehemu=kiume*2+kike;
+if(sehemu>0){let kila=baki/sehemu; if(kiume>0) html+=`Kiume kila mmoja ${(kila*2).toFixed(2)}<br>`; if(kike>0) html+=`Kike kila mmoja ${kila.toFixed(2)}<br>`;}
+let r=document.getElementById('mResult'); r.style.display='block'; r.innerHTML=html;
+}
+function payPi(){let amt=document.getElementById('sMali').value; alert("Nia ya Sadaqah: "+amt+" Pi - Fungua Pi Browser kulipa");}
+document.getElementById('zMali').addEventListener('input',calcZakat);
+document.getElementById('mMali').addEventListener('input',calcMirath);
+calcZakat();calcMirath();
+</script>
+</body>
+</html>
