@@ -3,142 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zakat Mirath Sadaqah + Staking</title>
+<title>Zakat Mirath Sadaqah Stake - Sharia 100%</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-body{margin:0;font-family:system-ui;background:#f6faf7;color:#222}
-.header{background:#0B6A2B;color:#fff;padding:20px;text-align:center}
-.langs{margin-top:12px}
-.langs button{padding:7px 14px;margin:3px;border:1px solid #ffffff80;background:rgba(255,255,255,.15);color:#fff;border-radius:20px;font-weight:700;cursor:pointer}
-.langs button.active{background:#fff;color:#0B6A2B}
-.container{max-width:560px;margin:auto;padding:14px}
-.card{background:#fff;border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid #0B6A2B}
-.card.stake{border-top-color:#D4AF37;background:#FFFBEB}
-.input{width:100%;padding:12px;border:1.5px solid #ddd;border-radius:10px;margin-top:6px;box-sizing:border-box}
+:root{--green:#0B6A2B;--gold:#D4AF37;--bg:#f6faf7}
+body{margin:0;font-family:system-ui;background:var(--bg);color:#222;line-height:1.5}
+.header{background:var(--green);color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:20}
+.langs button{padding:8px 16px;margin:4px;border:2px solid #fff;background:rgba(255,255,255,.2);color:#fff;border-radius:20px;font-weight:800;cursor:pointer}
+.langs button.active{background:#fff;color:var(--green)}
+.container{max-width:600px;margin:auto;padding:12px}
+.card{background:#fff;border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--green)}
+.card.gold{border-top-color:var(--gold);background:#FFFBEB}
+.card.dark{border-top-color:#111}
+.input,select{width:100%;padding:12px;border:1.5px solid #ddd;border-radius:10px;margin-top:6px;box-sizing:border-box}
 .btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer}
-.btn-green{background:#0B6A2B;color:#fff}
-.btn-gold{background:#D4AF37;color:#000}
-.btn-dark{background:#111;color:#D4AF37;border:1px solid #D4AF37}
-.result{display:none;background:#e8f5e9;padding:12px;border-radius:10px;margin-top:10px;font-weight:700}
-.info{background:#FFFBEB;border-left:4px solid #D4AF37;padding:10px;border-radius:8px;font-size:13px;margin-top:10px}
-details{margin-top:10px;background:#f9fafb;padding:10px;border-radius:10px}
-.badge{display:inline-block;background:#0B6A2B;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px}
+.btn-g{ background:var(--green);color:#fff } .btn-y{ background:var(--gold);color:#000 } .btn-b{ background:#111;color:var(--gold);border:1px solid var(--gold) }
+.result{background:#e8f5e9;padding:12px;border-radius:10px;margin-top:10px;font-weight:700;display:none}
+.info{background:#FFFBEB;border-left:4px solid var(--gold);padding:10px;border-radius:8px;font-size:12px;margin-top:10px;word-break:break-all}
+.row{display:flex;gap:8px} .row> *{flex:1}
+.badge{background:var(--green);color:#fff;padding:2px 8px;border-radius:10px;font-size:10px}
+.history{background:#f3f4f6;padding:10px;border-radius:10px;margin-top:10px;font-size:12px;max-height:150px;overflow:auto}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:50;padding:20px;overflow:auto}
+.modal>div{background:#fff;padding:18px;border-radius:16px;max-width:600px;margin:30px auto}
+a{color:var(--green)}
 </style>
 </head>
 <body>
 <div class="header">
-<h1 id="mainTitle">Zakat • Mirath • Sadaqah • Stake</h1>
-<p id="subTitle">Hesabu za Ki-Sharia 100% + Amanah Staking - Pi Network</p>
+<div id="mt" style="font-size:19px;font-weight:900">Zakat • Mirath • Sadaqah • Stake</div>
+<div id="st" style="font-size:12px;margin-top:3px">100% Sharia + Gold Live + PDF Cheti + Historia</div>
 <div class="langs">
 <button id="bSW" class="active" onclick="setLang('sw')">Kiswahili</button>
 <button id="bEN" onclick="setLang('en')">English</button>
 <button id="bAR" onclick="setLang('ar')">العربية</button>
 </div>
+<div style="margin-top:8px;font-size:11px">
+<span id="goldPrice">⏳ Gold Live: Inapakia...</span> | 
+<select id="curr" onchange="updateCurr()" style="padding:4px;border-radius:6px;border:none"><option value="Pi">Pi</option><option value="TZS">TZS</option><option value="USD">USD</option></select>
+</div>
 </div>
 
 <div class="container">
 
-<!-- 1. ZAKAT -->
+<!-- ZAKAT -->
 <div class="card">
-<h2 id="tZakat">1. ZAKAT <span class="badge">2.5%</span></h2>
-<p id="dZakat" style="font-size:12px;color:#666">Nguzo ya 3. Wajibu kwa mali iliyofikia Nisab na Haul.</p>
-<label id="lMali">Jumla ya Mali (Pi)</label>
-<input class="input" id="zMali" type="number" value="1000">
-<label id="lNisab">Nisab (85g Gold)</label>
-<input class="input" id="zNisab" type="number" value="85">
-<div class="result" id="zResult"></div>
-<button class="btn btn-green" id="bCalcZ" onclick="calcZakat()">Hesabu Zakat (2.5%)</button>
-<div class="info" id="infoZakat">Zakat ni 2.5% ya mali iliyokaa mwaka 1. Nisab = 85g Dhahabu. Husafisha mali (At-Tawba 103). Hulipiwa makundi 8 (Qur'an 9:60).</div>
+<h2 id="tZ">1. ZAKAT <span class="badge">2.5%</span></h2>
+<p id="dZ" style="font-size:12px;color:#666">Nguzo ya 3. Nisab inahesabiwa live kwa bei ya dhahabu.</p>
+<label id="lM">Jumla ya Mali</label><input class="input" id="zMali" type="number" value="1000">
+<label id="lN">Nisab Auto (85g Gold)</label><input class="input" id="zNisab" type="number" value="85" readonly>
+<div class="result" id="zRes"></div>
+<div class="row"><button class="btn btn-g" id="bZ" onclick="calcZakat()">Hesabu Zakat</button><button class="btn btn-y" onclick="genPDF()">📜 PDF Cheti</button></div>
+<button class="btn btn-b" id="bShare" onclick="shareZakat()">📤 Share Thawabu</button>
 </div>
 
-<!-- 2. MIRATH -->
+<!-- MIRATH KAMILI -->
 <div class="card">
-<h2 id="tMirath">2. MIRATH - Urithi</h2>
-<p id="dMirath" style="font-size:12px;color:#666">Ugawaji kwa mujibu wa An-Nisa 11-12.</p>
-<label id="lMaliM">Mali ya Marehemu (Pi)</label>
-<input class="input" id="mMali" type="number" value="1000">
-<label id="lMke">Mke / Mume</label>
-<select class="input" id="mMke"><option value="0">Hakuna</option><option value="mke">Mke 1</option><option value="mume">Mume</option></select>
-<div style="display:flex;gap:8px"><input class="input" id="mKiume" type="number" value="1" placeholder="Watoto Kiume"><input class="input" id="mKike" type="number" value="1" placeholder="Watoto Kike"></div>
-<div class="result" id="mResult"></div>
-<button class="btn btn-green" id="bCalcM" onclick="calcMirath()">Gawa Mirath</button>
-<details><summary id="sMirath">📖 Maelezo kuhusu Mirath na Ugawaji</summary><div style="font-size:13px;margin-top:8px">Mwanaume 2:1 dhidi ya mwanamke. Mke 1/8 na mtoto, 1/4 bila. Mume 1/4 na mtoto, 1/2 bila. Mama/Baba 1/6. Hii ni hesabu ya awali, muulize Kadhi kwa hukumu kamili. (Qur'an 4:11-12)</div></details>
+<h2 id="tM">2. MIRATH Kamili</h2>
+<p id="dM" style="font-size:12px;color:#666">Warithi wote - An-Nisa 11-12. Weka idadi.</p>
+<label id="lMM">Mali ya Marehemu</label><input class="input" id="mMali" type="number" value="1000">
+<div class="row"><select class="input" id="mMke"><option value="0">Mke 0</option><option value="1">Mke 1</option><option value="2">Mke 2</option><option value="3">Mke 3</option><option value="4">Mke 4</option></select><select class="input" id="mMume"><option value="0">Mume 0</option><option value="1">Mume 1</option></select></div>
+<div class="row"><input class="input" id="mBaba" type="number" value="0" placeholder="Baba"><input class="input" id="mMama" type="number" value="1" placeholder="Mama"></div>
+<div class="row"><input class="input" id="mKiume" type="number" value="1" placeholder="Watoto Kiume"><input class="input" id="mKike" type="number" value="1" placeholder="Watoto Kike"></div>
+<div class="row"><input class="input" id="mKaka" type="number" value="0" placeholder="Kaka"><input class="input" id="mDada" type="number" value="0" placeholder="Dada"></div>
+<div class="result" id="mRes"></div>
+<button class="btn btn-g" id="bM" onclick="calcMirath()">Gawa Mirath Kamili</button>
 </div>
 
-<!-- 3. SADAQAH -->
+<!-- SADAQAH -->
 <div class="card">
-<h2 id="tSadaqa">3. SADAQAH / CHARITY</h2>
-<p id="dSadaqa" style="font-size:12px;color:#666">Hiari kwa ajili ya Allah - kuwasaidia wenye uhitaji na walimu wa MADRASA.</p>
-<label id="lSadaqa">Kiasi cha Sadaqah (Pi)</label>
-<input class="input" id="sMali" type="number" value="5">
-<label id="lLengo">Lengo</label>
+<h2 id="tS">3. SADAQAH</h2>
+<p id="dS" style="font-size:12px;color:#666">Hiari - Wenye Uhitaji & Walimu wa MADRASA.</p>
+<label id="lS">Kiasi (Pi)</label><input class="input" id="sMali" type="number" value="5">
 <select class="input" id="sTo"><option>Wenye Uhitaji</option><option>Yatima</option><option>Walimu wa MADRASA</option><option>Misikiti</option><option>Fi Sabilillah</option></select>
-<div class="result" id="sResult" style="display:block">Nia: 5 Pi kwa Wenye Uhitaji</div>
-<button class="btn btn-gold" id="bSadaqa" onclick="payPi('sadaqah')">💜 Changia Sadaqah kwa Pi</button>
-<details><summary id="sSadaqa">❤️ Maelezo: Changia Sadaqah kwa hiari - Wenye Uhitaji & Walimu wa MADRASA</summary><div style="font-size:13px;margin-top:8px">Sadaqah ni hiari sio lazima. Qur'an 2:261 - mfano wa punje 1 kutoa mashuke 7. Lengo: kusaidia masikini, yatima, na walimu wa Madrasa wanaofundisha Qur'an bila mshahara. Allah atakulipa mara 700.</div></details>
+<div class="result" id="sRes" style="display:block">Nia: 5 Pi</div>
+<button class="btn btn-y" id="bSa" onclick="payPi('sadaqah')">💜 Changia Sadaqah</button>
+<div class="history" id="hSadaqah">Historia: Bado hakuna</div>
 </div>
 
-<!-- 4. STAKING - MPYA -->
-<div class="card stake">
-<h2 id="tStake">4. STAKING - Amanah 🔒</h2>
-<p id="dStake" style="font-size:12px;color:#666">Weka Pi yako kama Amanah (akiba salama) - Pata thawabu na Zakat inahesabika moja kwa moja.</p>
-<label id="lStake">Kiasi cha Kustake (Pi)</label>
-<input class="input" id="stMali" type="number" value="100">
-<label id="lMuda">Muda wa Amanah</label>
-<select class="input" id="stMuda"><option value="2">Wiki 2</option><option value="26">Miezi 6</option><option value="52" selected>Mwaka 1</option><option value="156">Miaka 3 (Thawabu Kubwa)</option></select>
-<div class="result" id="stResult" style="display:block;background:#FFF3CD">💰 Ukistake 100 Pi kwa Mwaka 1, Zakat yake itakuwa 2.5 Pi. Amanah yako iko salama.</div>
-<button class="btn btn-dark" id="bStake" onclick="payPi('stake')">🔒 Stake Pi kama Amanah</button>
-<details><summary id="sStake">📖 Maelezo ya Staking - Amanah kwa Sharia</summary><div style="font-size:13px;margin-top:8px">Staking = Kuhifadhi mali kama Amanah kwa muda. Sio Riba! Faida yake: 1) Kulinda mali yako na matumizi ya haraka (Hifz al-Mal). 2) Zakat inahesabiwa moja kwa moja. 3) Unapata bonus ya mining ya Pi Network. 4) Thawabu kwa nia njema ya kuhifadhi kwa ajili ya familia. Qur'an 23:8 - Walio na Amanah. Wallet salama: GDYOT...66FO</div></details>
-<div class="info">🔐 Wallet ya Amanah: GDYOTJO6HOJNDSQRG5OQNXE2F6NF7X5M4O36YUF3OYJKTKSDW2MN66FO - Inaonekana tu kwa Public, Seed ni siri yako!</div>
+<!-- STAKING -->
+<div class="card gold">
+<h2 id="tSt">4. STAKING - Amanah 🔒</h2>
+<p id="dSt" style="font-size:12px;color:#666">Weka kama Amanah - Zakat auto + Thawabu.</p>
+<label id="lSt">Kiasi (Pi)</label><input class="input" id="stMali" type="number" value="100">
+<label id="lMu">Muda</label><select class="input" id="stMuda"><option value="2">Wiki 2</option><option value="26">Miezi 6</option><option value="52" selected>Mwaka 1</option><option value="156">Miaka 3 (Thawabu Kubwa)</option></select>
+<div class="result" id="stRes" style="display:block;background:#FFF3CD">Ukistake 100 Pi = Zakat 2.5 Pi</div>
+<button class="btn btn-b" id="bSt" onclick="payPi('stake')">🔒 Stake kama Amanah</button>
+<div class="history" id="hStake">Historia ya Stake: Bado</div>
+<div class="info">🔐 Wallet Public: GDYOTJO6HOJNDSQRG5OQNXE2F6NF7X5M4O36YUF3OYJKTKSDW2MN66FO - Seed ni siri yako tu!</div>
+</div>
+
+<!-- DUA & LEGAL -->
+<div class="card dark">
+<h3 id="tLe">📖 Dua & Sheria</h3>
+<button class="btn btn-g" onclick="showModal('dua')" id="bDua">Dua Baada ya Kulipa</button>
+<button class="btn btn-y" onclick="showModal('privacy')" id="bPri">Privacy Policy</button>
+<button class="btn btn-b" onclick="showModal('terms')" id="bTer">Terms & Kadhi Contact</button>
 </div>
 
 </div>
+
+<!-- MODALS -->
+<div id="modDua" class="modal" onclick="hideModals()"><div><h3>Dua ya Zakat / Sadaqah</h3><p>اللهم بارك لهم فيما أعطيت واجعله طهورا لهم<br>Allahumma baarik lahum fima a'ataita, waj'alhu tuhuran lahum<br>Ewe Allah bariki kwa walichotoa na uisafishe.</p><p>Qur'an 9:103 - "Khud min amwalihim Sadaqatan tutahhiruhum"</p><button class="btn btn-g" onclick="hideModals()">Funga</button></div></div>
+<div id="modPrivacy" class="modal" onclick="hideModals()"><div><h3>Privacy Policy</h3><p style="font-size:13px">App hii haina kuchukua data yako. Hesabu zote zinafanyika ndani ya simu yako (offline). Hakuna Seed inayohifadhiwa kwenye server. Wallet Public tu ndiyo inatumika. Historia inahifadhiwa kwenye localStorage ya simu yako tu. Kwa maswali: b2go-crypto.github.io<br><br>Pi Network SDK inatumika kwa malipo tu.</p><button class="btn btn-g" onclick="hideModals()">Funga</button></div></div>
+<div id="modTerms" class="modal" onclick="hideModals()"><div><h3>Terms & Contact Kadhi</h3><p style="font-size:13px">1. Hesabu za Mirath ni za awali - muulize Kadhi kwa hukumu kamili (An-Nisa 11-12).<br>2. Zakat Nisab = 85g Gold au 595g Silver - kwa bei ya soko leo.<br>3. Staking sio Riba, ni Amanah (Hifz al-Mal - Qur'an 23:8).<br>4. App ya elimu, si Fatwa rasmi.<br><br><b>Contact:</b> WhatsApp Dar es Salaam - kupitia GitHub Issues: b2go-crypto/b2go-crypto.github.io</p><button class="btn btn-g" onclick="hideModals()">Funga</button></div></div>
 
 <script>
-const PiWallet = "GDYOTJO6HOJNDSQRG5OQNXE2F6NF7X5M4O36YUF3OYJKTKSDW2MN66FO";
-const L={
-sw:{mainTitle:"Zakat • Mirath • Sadaqah • Stake",subTitle:"Hesabu za Ki-Sharia 100% + Amanah Staking - Pi Network",tZakat:"1. ZAKAT",dZakat:"Nguzo ya 3. Wajibu kwa mali iliyofikia Nisab na Haul.",lMali:"Jumla ya Mali (Pi)",lNisab:"Nisab (85g Gold)",bCalcZ:"Hesabu Zakat (2.5%)",tMirath:"2. MIRATH - Urithi",dMirath:"Ugawaji kwa mujibu wa An-Nisa 11-12.",lMke:"Mke / Mume",sMirath:"📖 Maelezo kuhusu Mirath na Ugawaji",tSadaqa:"3. SADAQAH / CHARITY",dSadaqa:"Hiari kwa ajili ya Allah - wenye uhitaji na walimu wa MADRASA.",lSadaqa:"Kiasi cha Sadaqah (Pi)",lLengo:"Lengo",sSadaqa:"❤️ Maelezo: Changia Sadaqah kwa hiari",tStake:"4. STAKING - Amanah 🔒",dStake:"Weka Pi yako kama Amanah - Pata thawabu na Zakat inahesabika.",lStake:"Kiasi cha Kustake (Pi)",lMuda:"Muda wa Amanah",sStake:"📖 Maelezo ya Staking - Amanah kwa Sharia",bSadaqa:"💜 Changia Sadaqah kwa Pi",bStake:"🔒 Stake Pi kama Amanah"},
-en:{mainTitle:"Zakat • Mirath • Sadaqah • Stake",subTitle:"100% Sharia + Amanah Staking - Pi Network",tZakat:"1. ZAKAT",dZakat:"3rd Pillar. Obligatory if wealth reaches Nisab & Haul.",lMali:"Total Wealth (Pi)",lNisab:"Nisab (85g Gold)",bCalcZ:"Calculate Zakat (2.5%)",tMirath:"2. MIRATH - Inheritance",dMirath:"Distribution per Qur'an An-Nisa 11-12.",lMke:"Wife / Husband",sMirath:"📖 Details about Mirath",tSadaqa:"3. SADAQAH / CHARITY",dSadaqa:"Voluntary for Allah - needy & MADRASA teachers.",lSadaqa:"Sadaqah Amount (Pi)",lLengo:"Purpose",sSadaqa:"❤️ Details: Voluntary Sadaqah",tStake:"4. STAKING - Amanah 🔒",dStake:"Lock your Pi as Amanah - Get reward & auto Zakat.",lStake:"Amount to Stake (Pi)",lMuda:"Lock Duration",sStake:"📖 Details of Staking - Amanah in Sharia",bSadaqa:"💜 Donate Sadaqah with Pi",bStake:"🔒 Stake Pi as Amanah"},
-ar:{mainTitle:"الزكاة • الميراث • الصدقة • التخزين",subTitle:"حاسبة شرعية + أمانة - Pi",tZakat:"١. الزكاة",dZakat:"الركن الثالث. واجبة إذا بلغ النصاب.",lMali:"إجمالي المال",lNisab:"النصاب",bCalcZ:"احسب الزكاة",tMirath:"٢. الميراث",dMirath:"توزيع حسب النساء 11-12.",lMke:"الزوجة / الزوج",sMirath:"📖 تفاصيل الميراث",tSadaqa:"٣. الصدقة",dSadaqa:"تطوع لله - للمحتاجين.",lSadaqa:"مبلغ الصدقة",lLengo:"الغرض",sSadaqa:"❤️ تفاصيل الصدقة",tStake:"٤. التخزين - أمانة 🔒",dStake:"احفظ Pi كأمانة - أجر وزكاة تلقائية.",lStake:"مبلغ التخزين",lMuda:"المدة",sStake:"📖 تفاصيل التخزين - الأمانة في الشريعة",bSadaqa:"💜 تبرع بالصدقة",bStake:"🔒 خزن Pi كأمانة"}
+const PiWallet="GDYOTJO6HOJNDSQRG5OQNXE2F6NF7X5M4O36YUF3OYJKTKSDW2MN66FO";
+let rateTZS=2600, rateUSD=0.35; // Pi approximate, will update
+let lastZakat=0;
+
+// GOLD LIVE
+async function loadGold(){
+ try{
+  let r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd');
+  let j=await r.json();
+  let goldUSD=j['pax-gold']?.usd||2000;
+  let nisabUSD=goldUSD*85/31.1; // 85g in oz
+  document.getElementById('goldPrice').innerText="💰 Gold Live: 1g=$"+(goldUSD/31.1).toFixed(2)+" | Nisab ~ $"+nisabUSD.toFixed(0);
+  document.getElementById('zNisab').value= (nisabUSD/0.35).toFixed(0); // in Pi
+ }catch(e){ document.getElementById('goldPrice').innerText="💰 Gold: 85g ~ 1000 Pi (offline)"; }
+}
+loadGold();
+
+const TR={
+sw:{main:"Zakat • Mirath • Sadaqah • Stake",sub:"100% Sharia + Gold Live + PDF Cheti + Historia",tZ:"1. ZAKAT",dZ:"Nguzo ya 3. Nisab live kwa bei ya dhahabu.",lM:"Jumla ya Mali",lN:"Nisab Auto (85g Gold)",bZ:"Hesabu Zakat",bShare:"📤 Share Thawabu",tM:"2. MIRATH Kamili",dM:"Warithi wote - An-Nisa 11-12.",lMM:"Mali ya Marehemu",bM:"Gawa Mirath Kamili",tS:"3. SADAQAH",dS:"Hiari - Wenye Uhitaji & Walimu wa MADRASA.",lS:"Kiasi (Pi)",bSa:"💜 Changia Sadaqah",tSt:"4. STAKING - Amanah 🔒",dSt:"Weka kama Amanah - Zakat auto + Thawabu.",lSt:"Kiasi (Pi)",lMu:"Muda",bSt:"🔒 Stake kama Amanah",tLe:"📖 Dua & Sheria",bDua:"Dua Baada ya Kulipa",bPri:"Privacy Policy",bTer:"Terms & Kadhi Contact"},
+en:{main:"Zakat • Mirath • Sadaqah • Stake",sub:"100% Sharia + Gold Live + PDF Certificate + History",tZ:"1. ZAKAT",dZ:"3rd Pillar. Nisab live from gold price.",lM:"Total Wealth",lN:"Nisab Auto (85g Gold)",bZ:"Calculate Zakat",bShare:"📤 Share Reward",tM:"2. MIRATH Full",dM:"All heirs - An-Nisa 11-12.",lMM:"Estate Value",bM:"Distribute Mirath",tS:"3. SADAQAH",dS:"Voluntary - Needy & MADRASA Teachers.",lS:"Amount (Pi)",bSa:"💜 Donate Sadaqah",tSt:"4. STAKING - Amanah 🔒",dSt:"Lock as Amanah - Auto Zakat + Reward.",lSt:"Amount (Pi)",lMu:"Duration",bSt:"🔒 Stake as Amanah",tLe:"📖 Dua & Legal",bDua:"Dua After Payment",bPri:"Privacy Policy",bTer:"Terms & Kadhi Contact"},
+ar:{main:"الزكاة • الميراث • الصدقة • التخزين",sub:"شرعي 100% + ذهب مباشر + شهادة + تاريخ",tZ:"١. الزكاة",dZ:"الركن الثالث. النصاب مباشر من الذهب.",lM:"إجمالي المال",lN:"النصاب التلقائي",bZ:"احسب الزكاة",bShare:"📤 مشاركة الثواب",tM:"٢. الميراث الكامل",dM:"كل الورثة - النساء 11-12.",lMM:"قيمة التركة",bM:"وزع الميراث",tS:"٣. الصدقة",dS:"تطوع - المحتاجين ومعلمي المدرسة.",lS:"المبلغ",bSa:"💜 تبرع بالصدقة",tSt:"٤. التخزين - أمانة 🔒",dSt:"احفظ كأمانة - زكاة تلقائية + أجر.",lSt:"المبلغ",lMu:"المدة",bSt:"🔒 خزن كأمانة",tLe:"📖 دعاء وقانون",bDua:"دعاء بعد الدفع",bPri:"سياسة الخصوصية",bTer:"الشروط والاتصال"}
 };
 function setLang(l){
-let t=L[l]; if(!t) return;
-document.getElementById('mainTitle').innerText=t.mainTitle;
-document.getElementById('subTitle').innerText=t.subTitle;
-document.getElementById('tZakat').innerText=t.tZakat;
-document.getElementById('dZakat').innerText=t.dZakat;
-document.getElementById('lMali').innerText=t.lMali;
-document.getElementById('lNisab').innerText=t.lNisab;
-document.getElementById('bCalcZ').innerText=t.bCalcZ;
-document.getElementById('tMirath').innerText=t.tMirath;
-document.getElementById('dMirath').innerText=t.dMirath;
-document.getElementById('lMke').innerText=t.lMke;
-document.getElementById('sMirath').innerText=t.sMirath;
-document.getElementById('tSadaqa').innerText=t.tSadaqa;
-document.getElementById('dSadaqa').innerText=t.dSadaqa;
-document.getElementById('lSadaqa').innerText=t.lSadaqa;
-document.getElementById('lLengo').innerText=t.lLengo;
-document.getElementById('sSadaqa').innerText=t.sSadaqa;
-document.getElementById('tStake').innerText=t.tStake;
-document.getElementById('dStake').innerText=t.dStake;
-document.getElementById('lStake').innerText=t.lStake;
-document.getElementById('lMuda').innerText=t.lMuda;
-document.getElementById('sStake').innerText=t.sStake;
-document.getElementById('bSadaqa').innerText=t.bSadaqa;
-document.getElementById('bStake').innerText=t.bStake;
-document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));
-if(l=='sw') document.getElementById('bSW').classList.add('active');
-if(l=='en') document.getElementById('bEN').classList.add('active');
-if(l=='ar') document.getElementById('bAR').classList.add('active');
-document.body.dir = l=='ar'?'rtl':'ltr';
+ let t=TR[l]; if(!t) return;
+ const $=id=>document.getElementById(id);
+ $('mt').innerText=t.main; $('st').innerText=t.sub;
+ $('tZ').innerText=t.tZ; $('dZ').innerText=t.dZ; $('lM').innerText=t.lM; $('lN').innerText=t.lN; $('bZ').innerText=t.bZ; $('bShare').innerText=t.bShare;
+ $('tM').innerText=t.tM; $('dM').innerText=t.dM; $('lMM').innerText=t.lMM; $('bM').innerText=t.bM;
+ $('tS').innerText=t.tS; $('dS').innerText=t.dS; $('lS').innerText=t.lS; $('bSa').innerText=t.bSa;
+ $('tSt').innerText=t.tSt; $('dSt').innerText=t.dSt; $('lSt').innerText=t.lSt; $('lMu').innerText=t.lMu; $('bSt').innerText=t.bSt;
+ $('tLe').innerText=t.tLe; $('bDua').innerText=t.bDua; $('bPri').innerText=t.bPri; $('bTer').innerText=t.bTer;
+ document.getElementById('bSW').className=l=='sw'?'active':''; 
+ document.getElementById('bEN').className=l=='en'?'active':''; 
+ document.getElementById('bAR').className=l=='ar'?'active':'';
+ document.body.dir=l=='ar'?'rtl':'ltr';
 }
 function calcZakat(){
-let mali=parseFloat(document.getElementById('zMali').value)||0;
-let nisab=parseFloat(document.getElementById('zNisab').value)||85;
-let r=document.getElementById('zResult'); r.style.display='block';
-if(mali<nisab) r.innerHTML="Hakuna Zakat - chini ya Nisab";
-else r.innerHTML="Zakat: <b>"+(mali*0.025).toFixed(2)+" Pi</b>";
+ let m=parseFloat(document.getElementById('zMali').value)||0;
+ let n=parseFloat(document.getElementById('zNisab').value)||85;
+ let r=document.getElementById('zRes'); r.style.display='block';
+ if(m<n){ r.innerHTML="Chini ya Nisab - Hakuna Zakat"; lastZakat=0; }
+ else{ lastZakat=m*0.025; r.innerHTML="Zakat: <b>"+lastZakat.toFixed(2)+" Pi</b> (2.5%) - "+(lastZakat*rateTZS).toFixed(0)+" TZS"; saveHist('zakat',lastZakat); }
 }
 function calcMirath(){
-let mali=parseFloat(document.getElementById('mMali').value)||0;
-let mke=document.getElementById('mMke').value;
+ let mali=parseFloat(document.getElementById('mMali').value)||0;
+ let mke=parseInt(document.getElementById('mMke').value)||0;
+ let mume=parseInt(document.getElementById('mMume').value)||0;
+ let baba=parseInt(document.getElementById('mBaba').value)||0;
+ let mama=parseInt(document.getElementById('mMama').value)||0;
+ let kiume=parseInt(document.getElementById('mKiume').value)||0;
+ let kike=parseInt(document.getElementById('mKike').value)||0;
+ let kaka=parseInt(document.getElementById('mKaka').value)||0;
+ let dada=parseInt(document.getElementById('mDada').value)||0;
+ let html=""; let baki=mali;
+ if(mke>0){let h=mali*0.125; html+=`Mke ${mke}: ${h.toFixed(2)} Pi<br>`; baki-=h;}
+ if(mume>0){let h=mali*0.25; html+=`Mume: ${h.toFixed(2)} Pi<br>`; baki-=h;}
+ if(mama>0){let h=mali*0.1667; html+=`Mama 1/6: ${h.toFixed(2)}<br>`; baki-=h;}
+ if(baba>0){let h=mali*0.1667; html+=`Baba 1/6: ${h.toFixed(2)}<br>`; baki-=h;}
+ let sehemu=kiume*2+kike;
+ if(sehemu>0){let kila=baki/sehemu; if(kiume>0) html+=`Kila Kiume: ${(kila*2).toFixed(2)} x ${kiume}<br>`; if(kike>0) html+=`Kila Kike: ${kila.toFixed(2)} x ${kike}<br>`; baki=0;}
+ if((kaka+dada)>0 && sehemu==0){ let s=kaka*2+dada; let kila=baki/s; if(kaka>0) html+=`Kaka: ${(kila*2).toFixed(2)}<br>`; if(dada>0) html+=`Dada: ${kila.toFixed(2)}<br>`; }
+ let r=document.getElementById('mRes'); r.style.display='block'; r.innerHTML=html||"Weka warithi";
+}
+function saveHist(type,amt){
+ let h=JSON.parse(localStorage.getItem('hist_'+type)||'[]'); h.unshift({amt:amt,date:new Date().toLocaleString()}); localStorage.setItem('hist_'+type,JSON.stringify(h.slice(0,10))); loadHist();
+}
+function loadHist(){
+ let hs=JSON.parse(localStorage.getItem('hist_sadaqah')||'[]'); let hk=JSON.parse(localStorage.getItem('hist_stake')||'[]');
+ document.getElementById('hSadaqah').innerHTML=hs.length?hs.map(x=>`💜 ${x.amt} Pi - ${x.date}`).join('<br>'):'Historia: Bado hakuna';
+ document.getElementById('hStake').innerHTML=hk.length?hk.map(x=>`🔒 ${x.amt} Pi - ${x.date}`).join('<br>'):'Historia ya Stake: Bado';
+}
+function genPDF(){
+ if(!lastZakat){alert("Hesabu Zakat kwanza!"); return;}
+ const {jsPDF}=window.jspdf; const doc=new jsPDF();
+ doc.text("ZAKAT CERTIFICATE - Shahada ya Zakat",20,20);
+ doc.text("Mali: "+document.getElementById('zMali').value+" Pi",20,30);
+ doc.text("Zakat 2.5%: "+lastZakat.toFixed(2)+" Pi",20,40);
+ doc.text("Tarehe: "+new Date().toLocaleDateString(),20,50);
+ doc.text("Nisab: 85g Gold - Qur'an 9:103",20,60);
+ doc.text("Wallet: "+PiWallet.substring(0,20)+"...",20,70);
+ doc.text("App: zakatmirath3160.pinet.com",20,80);
+ doc.save("Zakat_Cheti_"+lastZakat.toFixed(2)+"Pi.pdf");
+}
+function shareZakat(){
+ let txt=`Mimi nimetoa Zakat ya ${lastZakat.toFixed(2)} Pi kupitia App ya Zakat Mirath Sadaqah - Sharia 100%! 👉 zakatmirath3160.pinet.com - B2go-crypto`;
+ if(navigator.share){navigator.share({title:"Zakat Yangu",text:txt});} else {navigator.clipboard.writeText(txt); alert("Link imenakiliwa! Tuma WhatsApp:\n"+txt);}
+}
+function updateCurr(){
+ let c=document.getElementById('curr').value;
+ let m=parseFloat(document.getElementById('zMali').value)||0;
+ if(c=='TZS') document.getElementById('zRes').innerHTML+="<br>~ "+(m*rateTZS).toLocaleString()+" TZS";
+ if(c=='USD') document.getElementById('zRes').innerHTML+="<br>~ $"+(m*rateUSD).toFixed(2)+" USD";
+}
+function payPi(type){
+ let amt=type=='stake'?document.getElementById('stMali').value:document.getElementById('sMali').value;
+ let memo=type=='stake'?"STAKE Amanah "+amt+" Pi":"SADAQAH "+amt+" Pi";
+ if(typeof Pi!=='undefined' && Pi.createPayment){
+  Pi.authenticate([],function(){
+   Pi.createPayment({amount:parseFloat(amt),memo:memo,metadata:{type:type,wallet:PiWallet}},{
+    onReadyForServerApproval:function(id){},
+    onReadyForServerCompletion:function(id,txid){alert("Mashallah! "+memo+" imetumwa!\nDua: Allah akuongezee!"); saveHist(type,amt); showModal('dua');},
+    onCancel:function(){},onError:function(e){alert("Error: "+e);}
+   });
+  });
+ }else{ alert("Fungua kwenye Pi Browser kulipa: "+memo); saveHist(type,amt); }
+}
+function showModal(id){ hideModals(); document.getElementById('mod'+id.charAt(0).toUpperCase()+id.slice(1)).style.display='block'; }
+function hideModals(){ document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); }
+document.getElementById('zMali').addEventListener('input',calcZakat);
+document.getElementById('stMali').addEventListener('input',function(){let v=parseFloat(this.value)||0; document.getElementById('stRes').innerHTML="Ukistake "+v+" Pi = Zakat "+(v*0.025).toFixed(2)+" Pi";});
+loadHist(); calcZakat(); if(typeof Pi!=='undefined'){Pi.init({version:"2.0"});}
+</script>
+</body>
+</html>
