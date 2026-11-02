@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HalalScan Pi - Msaidizi wa Elimu</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+:root{--green:#0a7a3a;--light:#f4f8f5}
+body{font-family:system-ui,Arial;margin:0;background:var(--light);color:#222}
+.header{background:var(--green);color:white;padding:25px;text-align:center}
+.container{max-width:700px;margin:auto;padding:15px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08);margin-bottom:15px}
+input{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+.btn{width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:12px;font-weight:bold}
+.yellow{background:#fff3cd;color:#856404}
+.green{background:#d4edda;color:#155724}
+.red{background:#f8d7da;color:#721c24}
+.disclaimer{background:#fff8e1;border-left:5px solid #ffb300;padding:15px;font-size:13px;line-height:1.5}
+.footer{text-align:center;font-size:11px;color:#888;margin-top:20px;padding:15px}
+.footer a{color:#888;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>HalalScan Pi</h1>
+<p>Msaidizi wa Elimu wa Kuchunguza Viambato</p>
+</div>
+
+<div class="container">
+<div class="card">
+<h3>1. Tafuta Kiambato</h3>
+<input type="text" id="inq" placeholder="Mf: gelatin, E120, pork, alcohol, whey...">
+<button class="btn" onclick="scan()">CHUNGUZA</button>
+<div id="res" style="margin-top:20px"></div>
+</div>
+
+<div class="card disclaimer">
+<b>⚠️ KANUNI 4 MUHIMU ZA KISHERIA - SOMENI HII KWANZA:</b><br><br>
+<b>1. HATUTOI FATWA:</b> App hii ni zana ya elimu tu (Educational Information Tool). Sio chombo cha kutoa hukmu ya dini.<br><br>
+<b>2. SIO CHETI CHA HALAL:</b> Hatuthibitishi kama bidhaa ni Halal Certified. Angalia alama rasmi ya Halal kwenye lebo ya bidhaa.<br><br>
+<b>3. CHANZO NI ELIMU YA UMMA:</b> Taarifa zimetokana na database za viambato vya umma. Tunaweza kukosea. Mtumiaji ana wajibu wa kuthibitisha kwenye lebo halisi ya mtengenezaji.<br><br>
+<b>4. ULIZA MWANACHUONI:</b> Kwa uamuzi wa mwisho wa kisheria, tafadhali muulize mwanachuoni au mtaalam wa Halal unayemuamini.
+</div>
+
+<div class="card">
+<h4>Jinsi tunavyoainisha (Bila kutamka Halal/Haram):</h4>
+<p><span class="badge green">Hakuna Utata Unaotambulika</span> = Kwa elimu ya kawaida hakijajulikana kuwa na utata, lakini bado thibitisha.</p>
+<p><span class="badge yellow">Inahitaji Uthibitisho Zaidi</span> = Kiambato hiki kinaweza kuwa na vyanzo tofauti (mnyama/mmea). Angalia chanzo kwenye lebo.</p>
+<p><span class="badge red">Mara Nyingi Huulizwa</span> = Wanazuoni wengi huuliza kuhusu kiambato hiki. Tafuta alama ya Halal Certified.</p>
+</div>
+
+<div class="footer">
+Kwa mujibu wa sheria: For informational & educational purposes only. Does not constitute religious advice.<br>
+<a href="privacy.html">Privacy</a> | <a href="terms.html">Terms</a><br><br>
+Pi Network App - halalscan-pi
+</div>
+</div>
+
+<script>
+// Database ya tahadhari - hatusemi Haramu moja kwa moja
+const db = {
+ "pork": {level:"red", info:"Nguruwe - Wanazuoni wengi hukataa matumizi yake. Tafuta uthibitisho wa chanzo mbadala kwenye lebo."},
+ "lard": {level:"red", info:"Mafuta ya nguruwe - Mara nyingi huulizwa. Hakikisha umeangalia lebo inayosema 100% vegetable oil."},
+ "alcohol": {level:"red", info:"Alcohol / Ethanol - Ina mitazamo tofauti kulingana na matumizi na kiasi. Muulize mwanachuoni wako kuhusu matumizi ya nje ya kinywaji."},
+ "gelatin": {level:"yellow", info:"Gelatin - Inaweza kutokana na ng'ombe, samaki au nguruwe. Tafuta imeandikwa 'Bovine Gelatin Halal' au 'Fish Gelatin'."},
+ "e120": {level:"yellow", info:"E120 Carmine - Rangi inayotokana na wadudu. Baadhi huiuliza, wengine huiweka kwenye utata. Angalia vyeti vya Halal."},
+ "whey": {level:"yellow", info:"Whey - Kwa kawaida haina utata, lakini baadhi ya whey huandaliwa kwa kutumia rennet ya wanyama. Tafuta Halal Certified."},
+ "glycerin": {level:"yellow", info:"Glycerin - Inaweza kuwa ya mimea au wanyama. Tafuta 'Vegetable Glycerin'."}
+};
+
+function scan(){
+ let q = document.getElementById('inq').value.toLowerCase().trim();
+ let box = document.getElementById('res');
+ if(!q){box.innerHTML="Andika kiambato kwanza."; return;}
+ 
+ let found = db[q];
+ if(found){
+   let color = found.level;
+   let label = color=='yellow' ? 'Inahitaji Uthibitisho Zaidi' : color=='red' ? 'Mara Nyingi Huulizwa' : 'Hakuna Utata Unaotambulika';
+   box.innerHTML = `<div style="border-left:5px solid ${color=='red' ? '#dc3545' : color=='yellow' ? '#ffc107' : '#28a745'};padding:12px;background:#fafafa">
+   <b>Kiambato:</b> ${q}<br>
+   <span class="badge ${color}">${label}</span><br><br>
+   ${found.info}<br><br>
+   <i>Ushauri: Soma lebo kamili ya bidhaa na tafuta alama ya Halal Certified. App hii haitoi hukmu.</i>
+   </div>`;
+ } else {
+   box.innerHTML = `<div style="border-left:5px solid #28a745;padding:12px;background:#fafafa">
+   <b>Kiambato:</b> ${q}<br>
+   <span class="badge green">Hakuna Utata Unaotambulika Katika Database Yetu</span><br><br>
+   Hatujapata taarifa ya utata kuhusu kiambato hiki katika database yetu ya elimu. Hata hivyo, bado unapaswa kuthibitisha kwenye lebo halisi ya bidhaa.<br><br>
+   <i>App hii ni kwa elimu tu, si uthibitisho wa Halal.</i>
+   </div>`;
+ }
+}
+
+// Pi SDK init
+Pi.init({version:"2.0"});
+</script>
+</body>
+</html>
