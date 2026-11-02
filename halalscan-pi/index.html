@@ -1,55 +1,84 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en" dir="ltr" id="htmlTag">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HalalScan Pi - Mwongozo wa Mwislamu</title>
+<title>HalalScan Pi</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 <style>
-body{font-family:system-ui;margin:0;background:#f4f8f5} .header{background:#0a7a3a;color:white;padding:25px;text-align:center}
+body{font-family:system-ui;margin:0;background:#f4f8f5} .header{background:#0a7a3a;color:white;padding:15px;text-align:center}
 .container{max-width:700px;margin:auto;padding:15px} .card{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08);margin-bottom:15px}
 input{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box} .btn{width:100%;padding:14px;background:#0a7a3a;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:10px}
 .badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold} .green{background:#d4edda;color:#155724} .yellow{background:#fff3cd;color:#856404} .red{background:#f8d7da;color:#721c24}
 .disclaimer{background:#fff8e1;border-left:5px solid #ffb300;padding:15px;font-size:13px;line-height:1.6}
+.lang-bar{display:flex;gap:8px;justify-content:center;margin:10px 0} .lang-btn{padding:6px 14px;border:1px solid #0a7a3a;border-radius:20px;background:white;color:#0a7a3a;cursor:pointer;font-weight:bold} .lang-btn.active{background:#0a7a3a;color:white}
 </style>
 </head>
 <body>
 <div class="header">
-<h1>HalalScan Pi</h1>
-<p>Zana ya Elimu kwa Mwislamu Kuchunguza Vyakula</p>
+<h1 id="t_title">HalalScan Pi</h1>
+<p id="t_sub">Mwongozo wa Mwislamu</p>
+<div class="lang-bar">
+<button class="lang-btn active" onclick="setLang('sw')">SW</button>
+<button class="lang-btn" onclick="setLang('en')">EN</button>
+<button class="lang-btn" onclick="setLang('ar')">العربية</button>
+</div>
 </div>
 <div class="container">
 <div class="card">
-<h3>Tafuta Kiambato / E-Number</h3>
-<input type="text" id="inq" placeholder="Mf: Gelatin, E120, Pork, Alcohol...">
-<button class="btn" onclick="scan()">CHUNGUZA KWA AJILI YA ELIMU</button>
+<h3 id="t_search">Tafuta Kiambato / E-Number</h3>
+<input type="text" id="inq" placeholder="Mf: Gelatin, E120, Pork...">
+<button class="btn" id="t_btn" onclick="scan()">CHUNGUZA KWA AJILI YA ELIMU</button>
 <div id="res" style="margin-top:20px"></div>
 </div>
 
-<div class="card disclaimer">
+<div class="card disclaimer" id="t_rules">
 <b>⚠️ KANUNI 4 ZA KISHERIA NA KIDINI:</b><br><br>
-<b>1. HATUTOI FATWA:</b> App hii ni kwa elimu tu. Sio chombo cha kutoa hukmu ya halali/haramu. Uamuzi ni wako baada ya kushauriana na mwanachuoni wako.<br><br>
-<b>2. SIO CHETI CHA HALAL:</b> Hatutoi cheti cha Halal. Tafuta alama rasmi ya "Halal Certified" kwenye kifungashio cha bidhaa.<br><br>
-<b>3. CHANZO CHA TAARIFA:</b> Taarifa zimekusanywa kwa kuzingatia machapisho ya elimu ya umma na miongozo ya jumla inayotolewa na taasisi mbalimbali za elimu ya Halal duniani kama JAKIM, MUIS na nyinginezo. HII SIO KAULI RASMI YA TAASISI YOYOTE. Tunaweza kukosea. Thibitisha kwenye lebo halisi ya mtengenezaji.<br><br>
-<b>4. ULIZA MWANACHUONI:</b> Kwa hukmu ya mwisho, muulize mtaalam wa dini unayemuamini kwa sababu madhehebu hutofautiana.
+<b>1. HATUTOI FATWA:</b> App hii ni kwa elimu tu.<br>
+<b>2. SIO CHETI CHA HALAL:</b> Hatutoi cheti.<br>
+<b>3. CHANZO:</b> Taarifa zimekusanywa kwa kuzingatia machapisho ya elimu ya umma na miongozo ya jumla inayotolewa na taasisi mbalimbali za elimu ya Halal duniani kama JAKIM, MUIS na nyinginezo. HII SIO KAULI RASMI YA TAASISI YOYOTE.<br>
+<b>4. ULIZA MWANACHUONI:</b> Kwa hukmu ya mwisho, muulize mtaalam.
 </div>
 </div>
 <script>
-const db = {
- "pork": {level:"red", label:"Mara Nyingi Huulizwa na Waislamu", info:"Nguruwe - Kwa mujibu wa machapisho mengi ya Kiislamu, nyama ya nguruwe haikubaliki. Ikiwa umeiona kwenye lebo, epuka na tafuta mbadala."},
- "gelatin": {level:"yellow", label:"Inahitaji Uthibitisho wa Chanzo", info:"Gelatin inaweza kuwa ya Ng'ombe Halal, Samaki au Nguruwe. Waislamu wengi huangalia kama imeandikwa 'Halal Bovine Gelatin'."},
- "alcohol": {level:"yellow", label:"Inahitaji Uthibitisho wa Matumizi", info:"Alcohol ina hukmu tofauti kulingana na matumizi. Baadhi ya vyakula hivi huwa na kiasi kidogo kutokana na mchakato. Uliza mwanachuoni kuhusu matumizi yake."},
- "e120": {level:"red", label:"Mara Nyingi Huulizwa na Waislamu", info:"E120 Carmine - Rangi nyekundu inayotokana na wadudu. Taasisi nyingi za Halal huijadili sana. Tafuta alama ya Halal Certified."}
+const trans = {
+ sw: {title:"HalalScan Pi", sub:"Mwongozo wa Mwislamu", search:"Tafuta Kiambato / E-Number", btn:"CHUNGUZA KWA AJILI YA ELIMU", ph:"Mf: Gelatin, E120, Pork...", rules:`<b>⚠️ KANUNI 4 ZA KISHERIA NA KIDINI:</b><br><br><b>1. HATUTOI FATWA:</b> App hii ni kwa elimu tu. Sio chombo cha kutoa hukmu ya halali/haramu. Uamuzi ni wako baada ya kushauriana na mwanachuoni wako.<br><br><b>2. SIO CHETI CHA HALAL:</b> Hatutoi cheti cha Halal. Tafuta alama rasmi ya "Halal Certified" kwenye kifungashio.<br><br><b>3. CHANZO CHA TAARIFA:</b> Taarifa zimekusanywa kwa kuzingatia machapisho ya elimu ya umma na miongozo ya jumla inayotolewa na taasisi mbalimbali za elimu ya Halal duniani kama JAKIM, MUIS na nyinginezo. HII SIO KAULI RASMI YA TAASISI YOYOTE. Tunaweza kukosea. Thibitisha kwenye lebo halisi.<br><br><b>4. ULIZA MWANACHUONI:</b> Kwa hukmu ya mwisho, muulize mtaalam wa dini unayemuamini.`},
+ en: {title:"HalalScan Pi", sub:"Muslim Education Guide", search:"Search for Ingredient / E-Number", btn:"RESEARCH FOR EDUCATION", ph:"Ex: Gelatin, E120, Pork...", rules:`<b>⚠️ 4 LEGAL AND RELIGIOUS RULES:</b><br><br><b>1. WE DO NOT GIVE FATWA:</b> This app is for education only. It is not a tool to issue a ruling on halal/haram. The decision is yours after consulting your scholar.<br><br><b>2. NOT A HALAL CERTIFICATE:</b> We do not issue a Halal certificate. Look for the official "Halal Certified" mark.<br><br><b>3. SOURCE OF INFORMATION:</b> Information has been compiled based on public education publications and general guidelines issued by various Halal education institutions around the world such as JAKIM, MUIS and others. THIS IS NOT AN OFFICIAL STATEMENT OF ANY INSTITUTION. We may be wrong. Verify on the manufacturer's actual label.<br><br><b>4. ASK A SCHOLAR:</b> For the final ruling, ask a religious expert you trust.`},
+ ar: {title:"HalalScan Pi", sub:"دليل المسلم التثقيفي", search:"ابحث عن المكون / الرقم E", btn:"بحث لأغراض تثقيفية", ph:"مثال: جيلاتين، E120، لحم خنزير...", rules:`<b>⚠️ ٤ قواعد قانونية ودينية:</b><br><br><b>١. لا نصدر فتوى:</b> هذا التطبيق للتثقيف فقط. ليس أداة لإصدار حكم حلال/حرام. القرار لك بعد استشارة عالمك.<br><br><b>٢. ليس شهادة حلال:</b> نحن لا نصدر شهادة حلال. ابحث عن علامة "حلال معتمد" الرسمية على العبوة.<br><br><b>٣. مصدر المعلومات:</b> تم جمع المعلومات بناءً على منشورات تثقيفية عامة وإرشادات عامة صادرة عن مؤسسات تثقيفية مختلفة للحلال حول العالم مثل JAKIM و MUIS وغيرها. هذا ليس بياناً رسمياً لأي مؤسسة. قد نكون مخطئين. تحقق من ملصق الشركة المصنعة الفعلي.<br><br><b>٤. اسأل عالماً:</b> للحكم النهائي، اسأل خبيراً دينياً تثق به.`}
 };
+
+const db = {
+ "pork": {sw:{label:"Mara Nyingi Huulizwa na Waislamu", info:"Nguruwe - Kwa machapisho mengi ya Kiislamu, nyama ya nguruwe haikubaliki."}, en:{label:"Often Questioned by Muslims", info:"Pork - According to many Islamic publications, pork is not permissible."}, ar:{label:"كثيراً ما يسأل عنه المسلمون", info:"لحم الخنزير - وفقاً للعديد من المنشورات الإسلامية، لحم الخنزير غير جائز."}, level:"red"},
+ "gelatin": {sw:{label:"Inahitaji Uthibitisho wa Chanzo", info:"Gelatin inaweza kuwa ya Ng'ombe Halal, Samaki au Nguruwe. Angalia 'Halal Bovine Gelatin'."}, en:{label:"Requires Proof of Source", info:"Gelatin can be from Halal Beef, Fish or Pork. Many Muslims check if it says 'Halal Bovine Gelatin'."}, ar:{label:"يتطلب إثبات المصدر", info:"يمكن أن يكون الجيلاتين من لحم بقري حلال أو سمك أو خنزير. كثير من المسلمين يتحققون مما إذا كان مكتوباً 'جيلاتين بقري حلال'."}, level:"yellow"},
+ "e120": {sw:{label:"Mara Nyingi Huulizwa na Waislamu", info:"E120 Carmine - Rangi nyekundu kutoka kwa wadudu."}, en:{label:"Often Questioned by Muslims", info:"E120 Carmine - Red color from insects."}, ar:{label:"كثيراً ما يسأل عنه المسلمون", info:"E120 كارمين - لون أحمر من الحشرات."}, level:"red"}
+};
+
+let curLang='sw';
+function setLang(l){
+ curLang=l;
+ document.documentElement.lang=l;
+ document.documentElement.dir = l==='ar' ? 'rtl' : 'ltr';
+ document.getElementById('t_title').innerText=trans[l].title;
+ document.getElementById('t_sub').innerText=trans[l].sub;
+ document.getElementById('t_search').innerText=trans[l].search;
+ document.getElementById('t_btn').innerText=trans[l].btn;
+ document.getElementById('inq').placeholder=trans[l].ph;
+ document.getElementById('t_rules').innerHTML=trans[l].rules;
+ document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+ event.target.classList.add('active');
+ document.getElementById('res').innerHTML='';
+}
+
 function scan(){
  let q=document.getElementById('inq').value.toLowerCase().trim();
  let box=document.getElementById('res');
- if(!q){box.innerHTML="Andika kiambato."; return;}
+ if(!q) return;
  let f=db[q];
  if(f){
-  box.innerHTML=`<div style="border-left:5px solid ${f.level=='red'?'#dc3545':'#ffc107'};padding:12px;background:#fafafa"><b>${q.toUpperCase()}</b><br><span class="badge ${f.level}">${f.label}</span><br><br>${f.info}<br><br><i>Kumbuka: Hii ni elimu tu, sio fatwa. Angalia lebo na muulize mwanachuoni.</i></div>`;
+  let d=f[curLang];
+  box.innerHTML=`<div style="border-left:5px solid ${f.level=='red'?'#dc3545':'#ffc107'};padding:12px;background:#fafafa"><b>${q.toUpperCase()}</b><br><span class="badge ${f.level}">${d.label}</span><br><br>${d.info}<br><br><i>${curLang==='ar'?'هذا تثقيف فقط، ليس فتوى': curLang==='en'?'This is just knowledge, not a fatwa':'Hii ni elimu tu, sio fatwa'}</i></div>`;
  } else {
-  box.innerHTML=`<div style="border-left:5px solid #28a745;padding:12px;background:#fafafa"><span class="badge green">Hakuna Utata Unaotambulika Katika Elimu Yetu</span><br><br>Hatujapata utata kuhusu <b>${q}</b> katika database yetu ya elimu. Lakini bado thibitisha lebo na alama ya Halal.</div>`;
+  box.innerHTML=`<div style="padding:12px;background:#e8f5e9;border-radius:8px">${curLang==='ar'?'لم نجد شبهة معروفة في قاعدة بياناتنا':'Hakuna utata unaotambulika'}</div>`;
  }
 }
 Pi.init({version:"2.0"});
