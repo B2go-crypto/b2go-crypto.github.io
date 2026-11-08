@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,9 +23,6 @@ input{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;box-sizing
 </style>
 </head>
 <body>
-
-<!-- ===== 1. KICHWA - HEADER ===== -->
-<!-- Jina: HalalScan Pi, Kauli mbiu: Waqf - Taarifa Tu, Sio Fatwa, Button 3 za lugha SW/EN/AR -->
 <div class="h">
 <h1 id="a1">HalalScan Pi</h1>
 <p id="a2">Waqf - Just Information, Not a Fatwa</p>
@@ -36,21 +32,13 @@ input{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;box-sizing
 <button class="l" id="b3" onclick="L('ar',this)">AR</button>
 </div>
 </div>
-
 <div class="c">
-
-<!-- ===== 2. SEARCH - KUTAFUTA KIAMBATO ===== -->
-<!-- Sehemu ya kuandika Pig, Pombe, Gelatin, E120 + Button RESEARCH FOR EDUCATION -->
 <div class="card">
 <h3 id="c1">Search for Ingredient / E-Number</h3>
 <input id="q" placeholder="Pig, Pombe, Gelatin, E120" value="">
 <button class="btn" onclick="S()" id="c2">RESEARCH FOR EDUCATION</button>
 <div id="r" style="margin-top:20px"></div>
 </div>
-
-<!-- ===== 5. WAQF - SADAQA ===== -->
-<!-- App ni BURE 100% na ni Waqf. 90% kwa Walimu wa Madrasa, Yatima, Wajane, Wahitaji. 10% tu matengenezo -->
-<!-- Button 2: Donate 1 Pi (Waqf kubwa) na Donate 0.5 Pi (Sadaqa ya Elimu) -->
 <div class="card waqf">
 <h3 id="d1">🤲 This App is Waqf - Sadaqatul Jariyah</h3>
 <p id="d2" style="font-size:14px;line-height:1.6"></p>
@@ -59,19 +47,9 @@ input{width:100%;padding:14px;border:1px solid #ccc;border-radius:8px;box-sizing
 <p id="payStatus" class="status"></p>
 <p id="d4" style="font-size:11px;color:#666;margin-top:8px"></p>
 </div>
-
-<!-- ===== 6. SERA YA KISHERIA - LEGAL POLICY ===== -->
-<!-- Hatutoi Fatwa, Sio cheti rasmi, Chanzo JAKIM/MUIS, Pombe = KHAMR Quran 5:90, Uliza Mwanachuoni -->
 <div class="card" style="background:#fff8e1;border-left:5px solid #ffb300;font-size:13px" id="e1"></div>
 </div>
-
 <script>
-// ===== 3. DATABASE - VITU 16 =====
-// Kundi 1 - Nguruwe/Pork: pig, pork, nguruwe, lard, bacon
-// Kundi 2 - KHAMR/Pombe: alcohol, pombe, wine, mvinyo, beer, bia
-// Kundi 3 - Mashbooh: gelatin, e471
-// Kundi 4 - Vingine: e120, damu, blood
-// Kila kimoja kina maelezo kwa lugha 3: SW, EN, AR. Rangi: Nyekundu=Haram, Machungwa=Mashbooh
 const DB={
 pig:{en:"❌ Not Halal - Considered Haram per Quran 2:173 - Category: Pork. Source: JAKIM Public List. Educational only, not our Fatwa.",sw:"❌ Sio Halal - Inachukuliwa Haram kwa Quran 2:173 - Kundi: Nguruwe. Chanzo: JAKIM Public List. Elimu tu, sio Fatwa yetu.",ar:"❌ غير حلال - يعتبر حراما حسب القرآن ٢:١٧٣ - فئة: خنزير.",color:"#d32f2f"},
 pork:{en:"❌ Not Halal - Category: Pork - Considered Haram per Quran 2:173.",sw:"❌ Sio Halal - Kundi: Nguruwe - Pork - Inachukuliwa Haram kwa Quran 2:173.",ar:"❌ غير حلال - فئة: خنزير.",color:"#d32f2f"},
@@ -90,24 +68,26 @@ bia:{en:"❌ Not Halal Certified - Category: KHAMR - Bia - Considered Haram.",sw
 damu:{en:"❌ Not Halal - Category: Blood - Considered Haram per Quran 2:173.",sw:"❌ Sio Halal - Kundi: Damu - Inachukuliwa Haram kwa Quran 2:173.",ar:"❌ غير حلال - دم.",color:"#d32f2f"},
 blood:{en:"❌ Not Halal - Category: Blood - Considered Haram per Quran 2:173.",sw:"❌ Sio Halal - Kundi: Damu - Inachukuliwa Haram.",ar:"❌ غير حلال.",color:"#d32f2f"}
 };
-
-// ===== 4. LUGHA 3 - SW / EN / AR =====
-// Uki-bonyeza SW app inabadilika Kiswahili. EN Kiingereza. AR Kiarabu na inaenda kulia-kushoto
 const TXT={
 en:{a1:"HalalScan Pi",a2:"Waqf - Just Information, Not a Fatwa",c1:"Search for Ingredient / E-Number",c2:"RESEARCH FOR EDUCATION",ph:"Pig, Pombe, Gelatin, E120",d1:"🤲 This App is Waqf - Sadaqatul Jariyah",d2:"This app is 100% FREE and is Waqf. Information tool only. 90% of your Pi Sadaqah goes DIRECTLY to MADRASA TEACHERS teaching Orphans, Widows and the Needy. Only 10% for app maintenance. May Allah reward you.",d3:"Donate 1 Pi - 90% for Madrasa Teachers, Orphans, Widows, Needy",d3b:"💙 Donate 0.5 Pi Sadaqa - For Halal Education",d4:"Transparency: 90% Waqf for Madrasa/Orphans/Widows/Needy, 10% maintenance. Every donation visible on Pi blockchain.",e1:"<b>⚠️ LEGAL POLICY - VERY IMPORTANT:</b><br><br><b>1. WE DO NOT GIVE A FATWA:</b> This app is just an information tool, not a Mufti.<br><b>2. NOT A HALAL CERTIFICATE:</b> This is not an official Halal certificate.<br><b>3. SOURCE:</b> We collect information from public sources: JAKIM (Malaysia), MUIS (Singapore), Open Food Facts. THIS IS NOT AN OFFICIAL STATEMENT FROM JAKIM/MUIS.<br><b>4. KHAMR CATEGORY:</b> Pombe/Alcohol is in KHAMR category - Considered Haram per Quran 5:90 - Educational info only.<br><b>5. ASK A SCHOLAR:</b> Final decision is that of your local scholar.<br><br><i>Per Pi Network & FDA/EU Laws: No misleading claims. Language is 'Considered Haram per sources' not direct Fatwa.</i>"},
 sw:{a1:"HalalScan Pi",a2:"Waqf - Taarifa Tu, Sio Fatwa",c1:"Tafuta Kiambato (Pombe, Nguruwe, Gelatin)",c2:"CHUNGUZA KWA ELIMU",ph:"Andika: pombe, nguruwe, gelatin",d1:"🤲 App Hii ni Waqf - Sadaqatul Jariyah",d2:"App hii ni BURE 100% na ni Waqf. Ni zana ya taarifa tu. 90% ya Sadaqa yako ya Pi itakwenda MOJA KWA MOJA kwa WALIMU WA MADRASA wanaofundisha Yatima, Wajane na Wenye Mahitaji. 10% tu matengenezo. Mungu akulipe kheri.",d3:"Changia 1 Pi - 90% kwa Walimu wa Madrasa, Yatima, Wajane, Wahitaji",d3b:"💙 Changia Sadaqa 0.5 Pi - Kwa Elimu ya Halal",d4:"Uwazi: 90% Waqf kwa Walimu/Yatima/Wajane/Wahitaji, 10% matengenezo. Kila mchango unaonekana kwenye blockchain ya Pi.",e1:"<b>⚠️ SERA YA KISHERIA - MUHIMU SANA:</b><br><br><b>1. HATUTOI FATWA:</b> App hii ni zana ya taarifa tu, sio Mufti. Tunatumia lugha 'Inachukuliwa Haram kulingana na...' sio Fatwa ya moja kwa moja.<br><b>2. SIO CHETI CHA HALAL:</b> Hii sio cheti rasmi cha Halal.<br><b>3. CHANZO:</b> Tunakusanya taarifa kutoka vyanzo vya umma: JAKIM, MUIS. HII SIO KAULI RASMI YA JAKIM/MUIS.<br><b>4. KUNDI LA KHAMR:</b> Pombe/Mvinyo/Bia zote zipo Kundi la KHAMR - Zinachukuliwa Haram kwa Quran 5:90 - Taarifa ya elimu tu.<br><b>5. ULIZA MWANACHUONI:</b> Uamuzi wa mwisho ni wa mwanachuoni wako.<br><br><i>Kwa mujibu wa Sheria za Pi Network & FDA/EU: Hakuna madai ya kupotosha.</i>"},
 ar:{a1:"HalalScan Pi",a2:"وقف - معلومات فقط، ليست فتوى",c1:"ابحث عن المكون (خمر، خنزير)",c2:"بحث تثقيفي",ph:"خمر، خنزير، جيلاتين",d1:"🤲 هذا التطبيق وقف - صدقة جارية",d2:"هذا التطبيق مجاني 100% وهو وقف. أداة معلومات فقط. 90% من صدقتك تذهب مباشرة لمعلمي المدارس الذين يعلمون الأيتام والأرامل والمحتاجين. 10% فقط للصيانة.",d3:"تبرع بـ 1 Pi - 90% لمعلمي المدرسة والأيتام والأرامل والمحتاجين",d3b:"💙 تبرع 0.5 Pi صدقة - للتعليم الحلال",d4:"الشفافية: 90% وقف، 10% صيانة. كل تبرع ظاهر على البلوكشين.",e1:"<b>⚠️ سياسة قانونية:</b><br>1. لا نفتي - نستخدم 'يعتبر حراما حسب المصادر' - معلومات فقط.<br>2. ليس شهادة حلال رسمية.<br>3. المصدر: بيانات عامة JAKIM, MUIS.<br>4. فئة الخمر: الخمر بأنواعه يعتبر حراما حسب القرآن ٥:٩٠."}
 };
-
+// ===== MPYA 1: FIX UKURASA MWEUPE =====
+function $(id){ return document.getElementById(id); }
 let lang='en';
-function L(l,btn){lang=l;document.documentElement.dir=l=='ar'?'rtl':'ltr';const t=TXT[l];a1.innerText=t.a1;a2.innerText=t.a2;c1.innerText=t.c1;c2.innerText=t.c2;q.placeholder=t.ph;d1.innerText=t.d1;d2.innerText=t.d2;d3.innerText=t.d3;document.getElementById('d3b').innerText=t.d3b;d4.innerText=t.d4;e1.innerHTML=t.e1;document.querySelectorAll('.l').forEach(x=>x.classList.remove('active'));btn.classList.add('active');if(r.innerHTML)S();}
-
-// ===== 2B. SEARCH FUNCTION - KAZI YA KUTAFUTA =====
-// Inatafuta neno uliloandika ndani ya DB ya vitu 16, inaonyesha rangi na maelezo, na Legal Policy chini
+function L(l,btn){
+  lang=l;
+  document.documentElement.dir = l=='ar'?'rtl':'ltr';
+  const t=TXT[l];
+  $('a1').innerText=t.a1; $('a2').innerText=t.a2; $('c1').innerText=t.c1; $('c2').innerText=t.c2;
+  $('q').placeholder=t.ph; $('d1').innerText=t.d1; $('d2').innerText=t.d2;
+  $('d3').innerText=t.d3; $('d3b').innerText=t.d3b; $('d4').innerText=t.d4; $('e1').innerHTML=t.e1;
+  document.querySelectorAll('.l').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if($('r').innerHTML) S();
+}
 function S(){let input=document.getElementById('q').value.toLowerCase().trim();let box=document.getElementById('r');if(!input){box.innerHTML="";return;}let found=null;for(let key in DB){if(input.includes(key)){found=DB[key];break;}}if(found){let txt=lang=='ar'?found.ar:lang=='sw'?found.sw:found.en;box.innerHTML=`<div style="padding:15px;border-left:6px solid ${found.color};background:#fff;border-radius:8px"><b style="font-size:16px;color:${found.color}">${txt}</b><br><br><small style='color:#555'>Source: JAKIM/MUIS Public Education List. This is educational information only, not our Fatwa. Category: ${input.includes('pombe')||input.includes('mvinyo')||input.includes('beer')||input.includes('bia')||input.includes('alcohol')||input.includes('wine')?'KHAMR - Quran 5:90':'PORK - Quran 2:173'}. Please consult scholar.</small><br><br><div style="background:#fff8e1;padding:12px;border-radius:6px">${TXT[lang].e1}</div></div>`;}else{box.innerHTML=`<div style="padding:12px;background:#e8f5e9;border-left:5px solid #0a7a3a;border-radius:8px"><b>✅ UMECHUNGUZA: ${input.toUpperCase()}</b><br><br>Haipo kwenye Orodha ya Haram ya JAKIM/MUIS ya vitu 16 tulivyonavyo sasa.<br>Lakini bado <b>Uliza Mwanachuoni wako</b> na angalia lebo kamili.<br><br><small>We are aggregator only. Not a Halal cert. Scanner base: 16 items - tunapanua kila wiki InshaAllah.</small></div>`;}}
-
-// ===== 7. PI PAYMENT - ILIYOFIXIWA MPYA =====
-// 7a. Auto-detect Sandbox: Kama uko sandbox.minepi.com inatumia sandbox:true, kama Pi Browser inatumia sandbox:false
 function isSandbox(){return window.location.hostname.includes('sandbox.minepi.com') || window.location.search.includes('sandbox=true');}
 function setStatus(msg){var el=document.getElementById('payStatus'); if(el) el.innerText=msg;}
 let piReady=false;
@@ -118,9 +98,7 @@ function initPi(){
   } else { setStatus("⏳ Inapakia Pi SDK..."); setTimeout(initPi,800); }
 }
 initPi();
-// 7b. Incomplete payment - Lazima kwa Pi SDK 2.0, inashughulikia malipo yaliyokwama
 function onIncompletePaymentFound(payment){ console.log("Incomplete payment:",payment); setStatus("⏳ Malipo ambayo hayakukamilika yamepatikana: "+payment.identifier); }
-// 7c. DONATE FUNCTION - Inafanya Auth kwanza, halafu createPayment, inaonyesha Error halisi, na Status live chini ya button
 async function donate(amount,memo){
   var btns=document.querySelectorAll('.btn-o, .btn-s');
   btns.forEach(b=>b.disabled=true);
@@ -132,15 +110,36 @@ async function donate(amount,memo){
     console.log("Auth OK:",auth.user.username);
     setStatus("As-salamu alaykum "+auth.user.username+" - Fungua Confirm...");
     await Pi.createPayment({amount:amount,memo:memo,metadata:{waqf:"90",app:"halalscan-pi",purpose:"waqf-madrasa",amount:amount}},{
-      onReadyForServerApproval:function(paymentId){ console.log("Ready for approval:",paymentId); setStatus("⏳ Inasubiri kuidhinishwa... ID: "+paymentId); },
-      onReadyForServerCompletion:function(paymentId,txid){ console.log("Ready for completion:",paymentId,txid); setStatus("✅ JazakAllahu Khair! Sadaqa imepokelewa."); alert("JazakAllahu Khairan! Sadaqa yako ya "+amount+" Pi imepokelewa - 90% Waqf kwa Walimu/Yatima/Wajane. Tx: "+txid); },
+      // ===== MPYA 2: Inaita Backend /api/approve - Inazuia Payment Expired =====
+      onReadyForServerApproval: async function(paymentId){
+        setStatus("⏳ Inaidhinisha malipo...");
+        try{
+          const r = await fetch('/api/approve', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({paymentId: paymentId})});
+          console.log("Approve OK", await r.text());
+          setStatus("✅ Imeidhinishwa - Thibitisha kwenye Wallet...");
+        }catch(e){ setStatus("❌ Approve error: "+e.message); }
+      },
+      // ===== MPYA 3: Inaita Backend /api/complete - Inamaliza malipo =====
+      onReadyForServerCompletion: async function(paymentId,txid){
+        setStatus("⏳ Inamaliza malipo...");
+        try{
+          const r = await fetch('/api/complete', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({paymentId: paymentId, txid: txid})});
+          console.log("Complete OK", await r.text());
+          setStatus("✅ JazakAllahu Khair! Sadaqa imepokelewa.");
+          alert("JazakAllahu Khairan! Sadaqa yako ya "+amount+" Pi imepokelewa - 90% Waqf kwa Walimu/Yatima/Wajane. Tx: "+txid);
+        }catch(e){ setStatus("❌ Complete error: "+e.message); }
+      },
       onCancel:function(paymentId){ setStatus("Malipo yameghairiwa."); alert("Ume-cancel malipo."); },
       onError:function(error,payment){ console.log("Payment error:",error); setStatus("❌ Error: "+(error && error.message ? error.message : JSON.stringify(error))); alert("Kuna tatizo la malipo: "+(error && error.message ? error.message : "Tazama console")); }
     });
   }catch(e){ console.log("Donate error:",e); setStatus("❌ "+e.message); alert("Error: "+e.message); }
   finally{ btns.forEach(b=>b.disabled=false); }
 }
-L('en',document.getElementById('b2'));
+// ===== MPYA 4: Anza baada ya load - Inazuia mweupe =====
+window.addEventListener('load', function(){
+  try{ L('en', document.getElementById('b2')); }
+  catch(e){ console.log("L error", e); document.getElementById('e1').innerHTML = "Tafadhali refresh ukurasa. Error: "+e.message; }
+});
 </script>
 </body>
 </html>
